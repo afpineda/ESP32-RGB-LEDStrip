@@ -57,6 +57,10 @@ so it can be used in ESP-IDF with minimal changes.
   - Based on the Remote Control Transceiver (RMT) API.
   - Using custom encoders for this application.
 
+- DMA mode (optional).
+
+  The library transparently falls back to PIO mode if not available.
+
 - Automated tests. To run them in a PC or virtual machine,
   the GNU C++ compiler and Powershell are required.
 
