@@ -1,0 +1,32 @@
+{
+    "version": "0.2",
+    "ignorePaths": [
+        "doc/API",
+        "doc/Doxyfile"
+    ],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "Adafruit",
+        "Doxyfile",
+        "GPIO",
+        "Licence",
+        "Lolin"
+    ],
+    "ignoreWords": [
+        "Dout",
+        "Doxigen's",
+        "Espressif",
+        "PSRAM",
+        "VLED",
+        "WROOM",
+        "Xtensa",
+        "arduino",
+        "devkit",
+        "falstad",
+        "gpio",
+        "noversion"
+    ],
+    "import": []
+}
+// for syntax, see: https://cspell.org/configuration/

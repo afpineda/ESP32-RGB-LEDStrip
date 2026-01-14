@@ -1,0 +1,57 @@
+############################################
+# Syntax Coloring Map
+############################################
+
+############################################
+# Data types (KEYWORD1)
+############################################
+
+LEDStrip	KEYWORD1
+WS2811LEDStrip	KEYWORD1
+WS2812LEDStrip	KEYWORD1
+WS2815LEDStrip	KEYWORD1
+SK6812LEDStrip	KEYWORD1
+UCS1903LEDStrip	KEYWORD1
+Pixel	KEYWORD1
+PixelFormat	KEYWORD1
+PixelDriver	KEYWORD1
+RgbLedController	KEYWORD1
+RgbGuard	KEYWORD1
+
+############################################
+# Methods and Functions (KEYWORD2)
+############################################
+
+red	KEYWORD2
+green	KEYWORD2
+blue	KEYWORD2
+min	KEYWORD2
+max	KEYWORD2
+avg	KEYWORD2
+luminance	KEYWORD2
+HSL_saturation	KEYWORD2
+hue	KEYWORD2
+hsl	KEYWORD2
+dim	KEYWORD2
+shift	KEYWORD2
+fill	KEYWORD2
+show	KEYWORD2
+shutdown	KEYWORD2
+reacquire	KEYWORD2
+brightness	KEYWORD2
+
+############################################
+# Constants (LITERAL1)
+############################################
+
+RGB	LITERAL1
+RBG	LITERAL1
+GRB	LITERAL1
+GBR	LITERAL1
+BRG	LITERAL1
+BGR LITERAL1
+WS2811  LITERAL1
+WS2812	LITERAL1
+WS2815	LITERAL1
+SK6812	LITERAL1
+UCS1903	LITERAL1

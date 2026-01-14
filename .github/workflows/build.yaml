@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - 'Development'
+      - 'BugFix'
+    paths:
+      - '**.c'
+      - '**.cpp'
+      - '**.ino'
+      - '**.h'
+      - '**.hpp'
+      - 'build.txt'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '**.c'
+      - '**.cpp'
+      - '**.ino'
+      - '**.h'
+      - '**.hpp'
+      - 'build.txt'
+
+jobs:
+  build:
+    name: CD/CI chain
+    runs-on: 'ubuntu-latest'
+    steps:
+
+      - name: Checkout repository contents
+        uses: actions/checkout@v4
+
+      - name: Build automated tests
+        shell: pwsh
+        run: ${{ github.workspace }}/CD_CI/Build.ps1 -RootPath ${{ github.workspace }}
+
+      - name: Run automated tests
+        shell: pwsh
+        run: ${{ github.workspace }}/CD_CI/Run.ps1 -RootPath ${{ github.workspace }}
