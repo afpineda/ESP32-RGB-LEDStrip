@@ -38,7 +38,6 @@
 
 #define LOOP_DELAY 50
 LED_STRIP_CLASS strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
-uint8_t selectedPriority = 0;
 
 //------------------------------------------------------------------
 // Auxiliary
