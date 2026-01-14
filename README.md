@@ -60,7 +60,8 @@ so it can be used in ESP-IDF with minimal changes.
 - Automated tests. To run them in a PC or virtual machine,
   the GNU C++ compiler and Powershell are required.
 
-Take a look at the provided [examples](./examples/README.md).
+Take a look at the provided [examples](./examples/README.md)
+and the [API documentation](https://afpineda.github.io/ESP32-RGB-LEDStrip)
 
 ### Level shifting and power for RGB LED strips
 
