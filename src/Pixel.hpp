@@ -166,6 +166,58 @@ public:
     }
 
     /**
+     * @brief Compare to another pixel
+     *
+     * @param other Other pixel
+     * @return true If this pixel matches @p other
+     * @return false Otherwise
+     */
+    bool operator==(const Pixel &other) const noexcept
+    {
+        return (red == other.red) &&
+               (blue == other.blue) &&
+               (green == other.green);
+    }
+
+    /**
+     * @brief Compare to a packed RGB color
+     *
+     * @param packedRGB Packed RGB value
+     * @return true If this pixel does not match @p packedRGB
+     * @return false Otherwise
+     */
+    bool operator!=(uint32_t packedRGB) const noexcept
+    {
+        return (packedRGB != static_cast<uint32_t>(*this));
+    }
+
+    /**
+     * @brief Compare to a packed RGB color
+     *
+     * @param packedRGB Packed RGB value
+     * @return true If this pixel does not match @p packedRGB
+     * @return false Otherwise
+     */
+    bool operator!=(int packedRGB) const noexcept
+    {
+        return (packedRGB != static_cast<int>(*this));
+    }
+
+    /**
+     * @brief Compare to another pixel
+     *
+     * @param other Other pixel
+     * @return true If this pixel does not match @p other
+     * @return false Otherwise
+     */
+    bool operator!=(const Pixel &other) const noexcept
+    {
+        return (red != other.red) ||
+               (blue != other.blue) ||
+               (green != other.green);
+    }
+
+    /**
      * @brief Get the first color channel in a certain pixel format
      *
      * @param format Pixel format
