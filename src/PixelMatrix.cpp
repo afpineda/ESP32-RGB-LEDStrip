@@ -89,9 +89,8 @@ void PixelMatrix::operator<<(PixelMatrix::size_type count) noexcept
     if ((rows > 0) && (columns > 1))
     {
         count = count % columns; // optimization
-        while (count-- > 0)
-            for (PixelMatrix::size_type row = 0; row < rows; row++)
-                shift(Idx(row, columns - 1), Idx(row, 0));
+        for (PixelMatrix::size_type row = 0; row < rows; row++)
+            shift(Idx(row, columns - 1), Idx(row, 0), count);
     }
 }
 
@@ -100,45 +99,23 @@ void PixelMatrix::operator>>(PixelMatrix::size_type count) noexcept
     if ((rows > 0) && (columns > 1))
     {
         count = count % columns; // optimization
-        while (count-- > 0)
-            for (PixelMatrix::size_type row = 0; row < rows; row++)
-                shift(Idx(row, 0), Idx(row, columns - 1));
+        for (PixelMatrix::size_type row = 0; row < rows; row++)
+            shift(Idx(row, 0), Idx(row, columns - 1), count);
     }
 }
 
 void PixelMatrix::scroll_up(PixelMatrix::size_type count) noexcept
 {
-    // PixelMatrix::size_type n = row_count();
-    // count = count % n;
-    // if ((n > 0) && (count > 0))
-    // {
-    //     std::size_t num_cycles = ::std::gcd(n, count);
-    //     for (PixelMatrix::size_type start = 0; start < num_cycles; ++start)
-    //     {
-    //         PixelVector temp = ::std::move((*this)[start]);
-    //         PixelMatrix::size_type current = start;
-    //         while (true)
-    //         {
-    //             PixelMatrix::size_type next_index = current + count;
-    //             if (next_index >= n)
-    //                 next_index -= n;
-    //             if (next_index == start)
-    //                 break;
-    //             (*this)[current] = ::std::move((*this)[next_index]);
-    //             current = next_index;
-    //         }
-    //         (*this)[current] = ::std::move(temp);
-    //     }
-    // }
+    if ((rows > 1) && (columns > 0))
+    {
+        shift(size() - 1, 0, (count * columns));
+    }
 }
 
 void PixelMatrix::scroll_down(PixelMatrix::size_type count) noexcept
 {
-    // PixelMatrix::size_type n = row_count();
-    // count = count % n;
-    // if ((n > 0) && (count > 0))
-    // {
-    //     PixelMatrix::size_type up_equivalent = (n - count) % n;
-    //     scroll_up(up_equivalent);
-    // }
+    if ((rows > 1) && (columns > 0))
+    {
+        shift(0, size() - 1, (count * columns));
+    }
 }

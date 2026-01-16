@@ -1,2 +1,3 @@
 PixelMatrixTest.cpp
 PixelMatrix.cpp
+PixelVector.cpp

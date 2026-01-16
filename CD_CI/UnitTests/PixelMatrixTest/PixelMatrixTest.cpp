@@ -40,6 +40,23 @@ void assert_filled(
         }
 }
 
+void print(const PixelMatrix &mtx)
+{
+    PixelMatrix::size_type col = 1;
+    for (auto pixel : mtx)
+    {
+        cout << (unsigned int)pixel << " ";
+        if (col >= mtx.column_count())
+        {
+            col = 1;
+            cout << endl;
+        }
+        else
+            col++;
+    }
+    cout << endl;
+}
+
 //-------------------------------------------------------------------
 // Test groups
 //-------------------------------------------------------------------
@@ -50,7 +67,7 @@ void test1()
     {
         PixelMatrix mtx;
         assert(mtx.size() == 0);
-         assert(mtx.row_count() == 0);
+        assert(mtx.row_count() == 0);
         assert(mtx.column_count() == 0);
     }
     {
@@ -125,123 +142,110 @@ void test4()
     {
         PixelMatrix mtx(test);
         mtx >> 3;
-        assert(mtx.at(0, 0) == 1);
-        assert(mtx.at(0, 1) == 2);
-        assert(mtx.at(0, 2) == 3);
-        assert(mtx.at(1, 0) == 3);
-        assert(mtx.at(1, 1) == 4);
-        assert(mtx.at(1, 2) == 5);
+        assert(mtx == test);
     }
     {
         PixelMatrix mtx(test);
-        mtx << 3;
-        assert(mtx.at(0, 0) == 1);
-        assert(mtx.at(0, 1) == 2);
-        assert(mtx.at(0, 2) == 3);
-        assert(mtx.at(1, 0) == 3);
-        assert(mtx.at(1, 1) == 4);
-        assert(mtx.at(1, 2) == 5);
+        mtx >> 2;
+        PixelMatrix result({
+            {2, 3, 1},
+            {4, 5, 3},
+        });
+        assert(mtx == result);
     }
     {
         PixelMatrix mtx(test);
         mtx >> 1;
-        assert(mtx.at(0, 0) == 3);
-        assert(mtx.at(0, 1) == 1);
-        assert(mtx.at(0, 2) == 2);
-        assert(mtx.at(1, 0) == 5);
-        assert(mtx.at(1, 1) == 3);
-        assert(mtx.at(1, 2) == 4);
+        PixelMatrix result({
+            {3, 1, 2},
+            {5, 3, 4},
+        });
+        assert(mtx == result);
+    }
+    {
+        PixelMatrix mtx(test);
+        mtx << 3;
+        assert(mtx == test);
+    }
+    {
+        PixelMatrix mtx(test);
+        mtx << 2;
+        PixelMatrix result({
+            {3, 1, 2},
+            {5, 3, 4},
+        });
+        assert(mtx == result);
     }
     {
         PixelMatrix mtx(test);
         mtx << 1;
-        assert(mtx.at(0, 0) == 2);
-        assert(mtx.at(0, 1) == 3);
-        assert(mtx.at(0, 2) == 1);
-        assert(mtx.at(1, 0) == 4);
-        assert(mtx.at(1, 1) == 5);
-        assert(mtx.at(1, 2) == 3);
+        PixelMatrix result({
+            {2, 3, 1},
+            {4, 5, 3},
+        });
+        assert(mtx == result);
     }
 }
 
 void test5()
 {
     cout << "- Scroll up/down -" << endl;
-    PixelMatrix test({{0}, {1}, {2}, {3}, {4}});
+    PixelMatrix test({
+        {1, 2},
+        {3, 4},
+        {5, 6},
+    });
+    // Scroll up
     {
         PixelMatrix mtx(test);
         mtx.scroll_up(1);
-        assert(mtx.at(0, 0) == 1);
-        assert(mtx.at(1, 0) == 2);
-        assert(mtx.at(2, 0) == 3);
-        assert(mtx.at(3, 0) == 4);
-        assert(mtx.at(4, 0) == 0);
-        mtx.scroll_down(1);
-        assert(mtx.at(0, 0) == 0);
-        assert(mtx.at(1, 0) == 1);
-        assert(mtx.at(2, 0) == 2);
-        assert(mtx.at(3, 0) == 3);
-        assert(mtx.at(4, 0) == 4);
+        PixelMatrix result({
+            {3, 4},
+            {5, 6},
+            {1, 2},
+        });
+        assert(mtx == result);
     }
     {
         PixelMatrix mtx(test);
         mtx.scroll_up(2);
-        assert(mtx.at(0, 0) == 2);
-        assert(mtx.at(1, 0) == 3);
-        assert(mtx.at(2, 0) == 4);
-        assert(mtx.at(3, 0) == 0);
-        assert(mtx.at(4, 0) == 1);
-        mtx.scroll_down(2);
-        assert(mtx.at(0, 0) == 0);
-        assert(mtx.at(1, 0) == 1);
-        assert(mtx.at(2, 0) == 2);
-        assert(mtx.at(3, 0) == 3);
-        assert(mtx.at(4, 0) == 4);
+        PixelMatrix result({
+            {5, 6},
+            {1, 2},
+            {3, 4},
+        });
+        assert(mtx == result);
     }
     {
         PixelMatrix mtx(test);
         mtx.scroll_up(3);
-        assert(mtx.at(0, 0) == 3);
-        assert(mtx.at(1, 0) == 4);
-        assert(mtx.at(2, 0) == 0);
-        assert(mtx.at(3, 0) == 1);
-        assert(mtx.at(4, 0) == 2);
+        assert(mtx == test);
+    }
+    // Scroll down
+    {
+        PixelMatrix mtx(test);
+        mtx.scroll_down(1);
+        PixelMatrix result({
+            {5, 6},
+            {1, 2},
+            {3, 4},
+        });
+        assert(mtx == result);
+    }
+    {
+        PixelMatrix mtx(test);
+        mtx.scroll_down(2);
+        PixelMatrix result({
+            {3, 4},
+            {5, 6},
+            {1, 2},
+        });
+        assert(mtx == result);
+    }
+    {
+        PixelMatrix mtx(test);
         mtx.scroll_down(3);
-        assert(mtx.at(0, 0) == 0);
-        assert(mtx.at(1, 0) == 1);
-        assert(mtx.at(2, 0) == 2);
-        assert(mtx.at(3, 0) == 3);
-        assert(mtx.at(4, 0) == 4);
-    }
-    {
-        PixelMatrix mtx(test);
-        mtx.scroll_up(4);
-        assert(mtx.at(0, 0) == 4);
-        assert(mtx.at(1, 0) == 0);
-        assert(mtx.at(2, 0) == 1);
-        assert(mtx.at(3, 0) == 2);
-        assert(mtx.at(4, 0) == 3);
-        mtx.scroll_down(4);
-        assert(mtx.at(0, 0) == 0);
-        assert(mtx.at(1, 0) == 1);
-        assert(mtx.at(2, 0) == 2);
-        assert(mtx.at(3, 0) == 3);
-        assert(mtx.at(4, 0) == 4);
-    }
-    {
-        PixelMatrix mtx(test);
-        mtx.scroll_up(5);
-        assert(mtx.at(0, 0) == 0);
-        assert(mtx.at(1, 0) == 1);
-        assert(mtx.at(2, 0) == 2);
-        assert(mtx.at(3, 0) == 3);
-        assert(mtx.at(4, 0) == 4);
-        mtx.scroll_down(5);
-        assert(mtx.at(0, 0) == 0);
-        assert(mtx.at(1, 0) == 1);
-        assert(mtx.at(2, 0) == 2);
-        assert(mtx.at(3, 0) == 3);
-        assert(mtx.at(4, 0) == 4);
+        assert(mtx == test);
     }
 }
 
@@ -255,6 +259,6 @@ int main()
     test2();
     test3();
     test4();
-    // test5();
+    test5();
     return 0;
 }
