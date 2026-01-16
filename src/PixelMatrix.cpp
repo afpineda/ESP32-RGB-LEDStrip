@@ -132,6 +132,8 @@ void PixelMatrix::scroll_down(PixelMatrix::size_type count) noexcept
 // LedMatrixDefinition
 //------------------------------------------------------------------------------
 
+#define INV(size, value) (((size) - 1) - (value))
+
 void LedMatrixDefinition::indexToCoordinates(
     ::std::size_t index,
     ::std::size_t &row,
@@ -148,10 +150,10 @@ void LedMatrixDefinition::indexToCoordinates(
         if (((first_pixel == LedMatrixFirstPixel::top_right) ||
              (first_pixel == LedMatrixFirstPixel::bottom_right)) ^
             reverse)
-            col = (column_count - 1) - col;
+            col = INV(column_count, col);
         if ((first_pixel == LedMatrixFirstPixel::bottom_left) ||
             (first_pixel == LedMatrixFirstPixel::bottom_right))
-            row = (row_count - 1) - row;
+            row = INV(row_count, row);
     }
     else // (arrangement == LedMatrixArrangement::columns)
     {
@@ -163,14 +165,12 @@ void LedMatrixDefinition::indexToCoordinates(
         if (((first_pixel == LedMatrixFirstPixel::bottom_left) ||
              (first_pixel == LedMatrixFirstPixel::bottom_right)) ^
             reverse)
-            row = (row_count - 1) - row;
+            row = INV(row_count, row);
         if ((first_pixel == LedMatrixFirstPixel::top_right) ||
             (first_pixel == LedMatrixFirstPixel::bottom_right))
-            col = (column_count - 1) - col;
+            col = INV(column_count, col);
     }
 }
-
-#define INV(size, value) (((size) - 1) - (value))
 
 ::std::size_t LedMatrixDefinition::coordinatesToIndex(
     ::std::size_t row,
@@ -259,6 +259,7 @@ void LedMatrixDefinition::indexToCoordinates(
     break;
     } // switch
     assert(false && "switch statement failure");
+    return (::std::size_t)-1;
 }
 
 ::std::size_t LedMatrixDefinition::canonicalIndex(

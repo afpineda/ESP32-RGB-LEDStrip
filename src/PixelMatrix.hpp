@@ -89,9 +89,11 @@ struct LedMatrixDefinition
      * @brief Retrieve the coordinates of a pixel index according to
      *        this working parameters
      *
-     * @param index Pixel index
-     * @param row Pixel row
-     * @param col Pixel column
+     * @warning Bounds are checked with assertions, only.
+     *
+     * @param[in] index Pixel index
+     * @param[out] row Pixel row
+     * @param[out] col Pixel column
      */
     void indexToCoordinates(
         ::std::size_t index,
@@ -101,6 +103,8 @@ struct LedMatrixDefinition
     /**
      * @brief Retrieve the index of the given pixel coordinates
      *        according to this working parameters
+     *
+     * @warning Bounds are checked with assertions, only.
      *
      * @param row Pixel row
      * @param col Pixel column
