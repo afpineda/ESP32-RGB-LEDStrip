@@ -34,84 +34,44 @@ using namespace std;
 
 void test1()
 {
-    cout << "- Array initialization -" << endl;
-    PixelVector arr1;
-    PixelVector arr2({0, 0, RGB_TEST_COLOR});
-    PixelVector arr3(2, Pixel(RGB_TEST_COLOR));
-    PixelVector arr4(2);
-
-    assert(arr1.size() == 0);
-    assert(arr2.size() == 3);
-    assert(arr3.size() == 2);
-    assert(arr4.size() == 2);
-    assert(arr2[0] == 0);
-    assert(arr2[1] == 0);
-    assert(arr2[2] == RGB_TEST_COLOR);
-    assert(arr3[0] == RGB_TEST_COLOR);
-    assert(arr3[1] == RGB_TEST_COLOR);
-    assert(arr4[0] == 0);
-    assert(arr4[0] == 0);
+    cout << "- Vector initialization -" << endl;
+    {
+        PixelVector arr1;
+        assert(arr1.size() == 0);
+    }
+    {
+        PixelVector arr2({1, 2, RGB_TEST_COLOR});
+        assert(arr2.size() == 3);
+        assert(arr2[0] == 1);
+        assert(arr2[1] == 2);
+        assert(arr2[2] == RGB_TEST_COLOR);
+    }
+    {
+        PixelVector arr3(2, Pixel(RGB_TEST_COLOR));
+        assert(arr3.size() == 2);
+        assert(arr3[0] == RGB_TEST_COLOR);
+        assert(arr3[1] == RGB_TEST_COLOR);
+    }
+    {
+        PixelVector arr4(2);
+        assert(arr4.size() == 2);
+        assert(arr4[0] == 0);
+        assert(arr4[0] == 0);
+    }
 }
 
 void test2()
 {
-    cout << "- Shift up -" << endl;
-    PixelVector arr({0, 1, 2, 3});
-    PixelVector w(arr);
-    w.shift(0, (::std::size_t)-1);
-
-    assert(w[0] == 3 && "Part1");
-    assert(w[1] == 0 && "Part1");
-    assert(w[2] == 1 && "Part1");
-    assert(w[3] == 2 && "Part1");
-
-    w = arr;
-    w >> 2;
-
-    assert(w[0] == 2 && "Part2");
-    assert(w[1] == 3 && "Part2");
-    assert(w[2] == 0 && "Part2");
-    assert(w[3] == 1 && "Part2");
-
-    w = arr;
-    w.shift(1, 2);
-
-    assert(w[0] == 0 && "Part3");
-    assert(w[1] == 2 && "Part3");
-    assert(w[2] == 1 && "Part3");
-    assert(w[3] == 3 && "Part3");
+    cout << "- Vector comparison -" << endl;
+    PixelVector a({1, 2, 3, 4});
+    PixelVector b({1, 2, 3, 4});
+    PixelVector c({1, 2, 3});
+    assert(a == a);
+    assert(a == b);
+    assert(a != c);
 }
 
 void test3()
-{
-    cout << "- Shift down -" << endl;
-    PixelVector arr({0, 1, 2, 3});
-    PixelVector w(arr);
-    w.shift((::std::size_t)-1, 0);
-
-    assert(w[0] == 1 && "Part1");
-    assert(w[1] == 2 && "Part1");
-    assert(w[2] == 3 && "Part1");
-    assert(w[3] == 0 && "Part1");
-
-    w = arr;
-    w << 2;
-
-    assert(w[0] == 2 && "Part2");
-    assert(w[1] == 3 && "Part2");
-    assert(w[2] == 0 && "Part2");
-    assert(w[3] == 1 && "Part2");
-
-    w = arr;
-    w.shift(2, 1);
-
-    assert(w[0] == 0 && "Part3");
-    assert(w[1] == 2 && "Part3");
-    assert(w[2] == 1 && "Part3");
-    assert(w[3] == 3 && "Part3");
-}
-
-void test4()
 {
     cout << "- Fill -" << endl;
     {
@@ -170,6 +130,145 @@ void test4()
     }
 }
 
+void test4()
+{
+    cout << "- Shift up segment one pixel -" << endl;
+    {
+        PixelVector test({0, 1, 2, 3});
+        PixelVector result({0, 1, 2, 3});
+        test.shift(0, 0);
+        assert(test == result);
+        test.shift(1, 1);
+        assert(test == result);
+        test.shift(2, 2);
+        assert(test == result);
+        test.shift(3, 3);
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(0, 3);
+        PixelVector result({3, 0, 1, 2});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(1, 3);
+        // cout << (int)test[0] << (int)test[1]
+        // << (int)test[2] << (int)test[3] << endl;
+        PixelVector result({0, 3, 1, 2});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(2, 3);
+        PixelVector result({0, 1, 3, 2});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(0, 1);
+        PixelVector result({1, 0, 2, 3});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(0, 2);
+        PixelVector result({2, 0, 1, 3});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(1, 2);
+        PixelVector result({0, 2, 1, 3});
+        assert(test == result);
+    }
+}
+
+void test5()
+{
+    cout << "- Shift down segment one pixel -" << endl;
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(3, 0);
+        PixelVector result({1, 2, 3, 0});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(3, 1);
+        PixelVector result({0, 2, 3, 1});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(3, 2);
+        PixelVector result({0, 1, 3, 2});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(1, 0);
+        PixelVector result({1, 0, 2, 3});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(2, 0);
+        PixelVector result({1, 2, 0, 3});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test.shift(1, 2);
+        PixelVector result({0, 2, 1, 3});
+        assert(test == result);
+    }
+}
+
+void test6()
+{
+    cout << "- Shift up/down two or more pixels -" << endl;
+    // shift up
+    {
+        PixelVector test({0, 1, 2, 3});
+        test >> 2;
+        PixelVector result({2, 3, 0, 1});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test >> 3;
+        PixelVector result({1, 2, 3, 0});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test >> 4;
+        PixelVector result({0, 1, 2, 3});
+        assert(test == result);
+    }
+    // shift down
+    {
+        PixelVector test({0, 1, 2, 3});
+        test << 2;
+        PixelVector result({2, 3, 0, 1});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test << 3;
+        PixelVector result({3, 0, 1, 2});
+        assert(test == result);
+    }
+    {
+        PixelVector test({0, 1, 2, 3});
+        test << 4;
+        PixelVector result({0, 1, 2, 3});
+        assert(test == result);
+    }
+}
+
 //-------------------------------------------------------------------
 // MAIN
 //-------------------------------------------------------------------
@@ -180,5 +279,7 @@ int main()
     test2();
     test3();
     test4();
+    test5();
+    test6();
     return 0;
 }

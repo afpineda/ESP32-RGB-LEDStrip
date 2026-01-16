@@ -1,3 +1,4 @@
 ConstructorTest.cpp
 Pixel.cpp
+PixelVector.cpp
 RgbLedController.cpp

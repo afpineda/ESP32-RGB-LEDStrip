@@ -1,2 +1,3 @@
 PriorityDisplayTest.cpp
 RgbLedController.cpp
+PixelVector.cpp
