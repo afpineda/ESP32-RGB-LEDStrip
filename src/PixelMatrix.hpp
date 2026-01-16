@@ -19,12 +19,134 @@
 //------------------------------------------------------------------------------
 
 /**
+ * @brief Wiring schema of rows or columns in an LED matrix
+ *
+ */
+enum class LedMatrixWiring : unsigned char
+{
+    /**
+     * @brief The rightmost/bottom pixel in an odd row/column is connected to
+     *        the rightmost/bottom pixel in the next row/column.
+     *        The leftmost/top pixel in an even row/column is connected to
+     *        the leftmost/top pixel in the next row/column.
+     */
+    serpentine = 0,
+    ///  @brief The rightmost/bottom pixel in a row/column is connected
+    ///         to the leftmost/top pixel in the next row/column.
+    linear = 1,
+    /// @brief Alias for "serpentine"
+    zig_zag = serpentine,
+    /// @brief Alias for "linear"
+    progressive = linear,
+};
+
+/**
+ * @brief First pixel attached to the data wire in an LED matrix
+ *
+ */
+enum class LedMatrixFirstPixel : unsigned char
+{
+    /// @brief First pixel is the top left one
+    top_left,
+    /// @brief First pixel is the top right one
+    top_right,
+    /// @brief First pixel is the bottom left one
+    bottom_left,
+    /// @brief First pixel is the bottom right one
+    bottom_right
+};
+
+/**
+ * @brief Arrangement of rows and columns in an LED matrix
+ *
+ */
+enum class LedMatrixArrangement : unsigned char
+{
+    /// @brief The first pixel is wired to a row
+    rows,
+    /// @brief The first pixel is wired to a column
+    columns
+};
+
+/**
+ * @brief Working parameters of an LED matrix
+ *
+ */
+struct LedMatrixDefinition
+{
+    /// @brief Number of rows
+    ::std::size_t row_count = 0;
+    /// @brief Number of columns
+    ::std::size_t column_count = 0;
+    /// @brief First pixel in the pixel chain
+    LedMatrixFirstPixel first_pixel = LedMatrixFirstPixel::top_left;
+    /// @brief Arrangement of rows and columns
+    LedMatrixArrangement arrangement = LedMatrixArrangement::rows;
+    /// @brief Wiring schema
+    LedMatrixWiring wiring = LedMatrixWiring::serpentine;
+
+    /**
+     * @brief Retrieve the coordinates of a pixel index according to
+     *        this working parameters
+     *
+     * @param index Pixel index
+     * @param row Pixel row
+     * @param col Pixel column
+     */
+    void indexToCoordinates(
+        ::std::size_t index,
+        ::std::size_t &row,
+        ::std::size_t &col) const noexcept;
+
+    /**
+     * @brief Retrieve the index of the given pixel coordinates
+     *        according to this working parameters
+     *
+     * @param row Pixel row
+     * @param col Pixel column
+     * @return ::std::size_t Pixel index
+     */
+    ::std::size_t coordinatesToIndex(
+        ::std::size_t row,
+        ::std::size_t col) const noexcept;
+
+    /**
+     * @brief Retrieve the canonical index of the given pixel index
+     *
+     * @note The canonical index is the corresponding pixel index
+     *       in the PixelMatrix implementation
+     *
+     * @param index Pixel index
+     * @return ::std::size_t Canonical pixel index
+     */
+    ::std::size_t canonicalIndex(::std::size_t index) const noexcept;
+};
+
+/**
  * @brief Matrix of pixels
  *
  */
 struct PixelMatrix : public PixelVector
 {
+    /// @brief Canonical first pixel in any pixel matrix
+    /// @note Informational. No use.
+    inline static constexpr const LedMatrixFirstPixel first_pixel =
+        LedMatrixFirstPixel::top_left;
+
+    /// @brief Canonical arrangement of rows and columns in any pixel matrix
+    /// @note Informational. No use.
+    inline static constexpr const LedMatrixArrangement arrangement =
+        LedMatrixArrangement::rows;
+
+    /// @brief Canonical equivalent wiring schema in any pixel matrix
+    /// @note Informational. No use.
+    inline static constexpr const LedMatrixWiring wiring =
+        LedMatrixWiring::linear;
+
+    /// @brief Size type
     using size_type = typename PixelVector::size_type;
+
+    /// @brief Initializer list type
     using initializer_list_type =
         typename ::std::initializer_list<::std::initializer_list<Pixel>>;
 
@@ -42,6 +164,17 @@ struct PixelMatrix : public PixelVector
      * @param color Initial color for all cells
      */
     PixelMatrix(size_type rows, size_type columns, Pixel color = 0) noexcept;
+
+    /**
+     * @brief Create matrix of pixels suitable for an LED matrix
+     *
+     * @param def Working parameters of the LED matrix
+     * @param color Initial color for all cells
+     */
+    PixelMatrix(
+        const LedMatrixDefinition &def,
+        Pixel color = 0) noexcept
+        : PixelMatrix(def.row_count, def.column_count, color) {}
 
     /**
      * @brief Initialize a matrix of pixels
@@ -63,6 +196,17 @@ struct PixelMatrix : public PixelVector
      * @return Pixel& Pixel
      */
     Pixel &at(size_type row, size_type col);
+
+    /**
+     * @brief Access to a pixel
+     *
+     * @note There are bound checks
+     *
+     * @param row Row index
+     * @param col Column index
+     * @return Pixel& Pixel
+     */
+    const Pixel &at(size_type row, size_type col) const;
 
     PixelMatrix(const PixelMatrix &) noexcept = default;
     PixelMatrix(PixelMatrix &&) noexcept = default;
@@ -127,6 +271,19 @@ struct PixelMatrix : public PixelVector
      * @param count Shift count
      */
     void scroll_down(size_type count) noexcept;
+
+    /**
+     * @brief Check if this matrix of pixels is suitable for display
+     *        in a given LED matrix
+     *
+     * @param def Working parameters of the LED matrix
+     * @return true If suitable
+     * @return false If not
+     */
+    bool suitable_for(const LedMatrixDefinition &def)
+    {
+        return (rows == def.row_count) && (columns = def.column_count);
+    }
 
 private:
     size_type rows;
