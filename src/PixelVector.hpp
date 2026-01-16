@@ -28,7 +28,7 @@ public:
     using size_type = typename ::std::vector<Pixel>::size_type;
 
     /**
-     * @brief Shift the contents of the vector one pixel
+     * @brief Shift the contents of the vector
      *        up (right) or down (left)
      *
      * @note if @p from_index is greater than @p to_index,
@@ -40,61 +40,30 @@ public:
      *
      * @param from_index Index where shifting starts (inclusive)
      * @param to_index Index where shifting ends (inclusive)
+     * @param shift Count of pixels to be shifted
      */
-    void shift(size_type from_index, size_type to_index)
-    {
-        {
-            if (from_index >= this->size())
-                from_index = this->size() - 1;
-            if (to_index >= this->size())
-                to_index = this->size() - 1;
-            Pixel aux = (*this)[to_index];
-            if (from_index < to_index)
-                // shift up
-                for (size_type i = to_index; (i > from_index); i--)
-                    (*this)[i] = (*this)[i - 1];
-            else if (to_index < from_index)
-                // shift down
-                for (size_type i = to_index; (i < from_index); i++)
-                    (*this)[i] = (*this)[i + 1];
-            else
-                return;
-            (*this)[from_index] = aux;
-        }
-    }
+    void shift(size_type from_index, size_type to_index, size_type shift = 1);
 
     /**
      * @brief Shift down (or left) all pixels
      *
      * @param count Shift count
      */
-    void operator<<(size_type count)
-    {
-        while (count-- > 0)
-            shift((size_type)-1, 0);
-    }
+    void operator<<(size_type count);
 
     /**
      * @brief Shift up (or right) all pixels
      *
      * @param count Shift count
      */
-    void operator>>(size_type count)
-    {
-        while (count-- > 0)
-            shift(0, (size_type)-1);
-    }
+    void operator>>(size_type count);
 
     /**
      * @brief Fill the entire vector with a pixel color
      *
      * @param color Pixel color
      */
-    void fill(const Pixel &color)
-    {
-        for (size_type i = 0; i < this->size(); i++)
-            (*this)[i] = color;
-    }
+    void fill(const Pixel &color);
 
     /**
      * @brief Fill a segment with a pixel color
@@ -103,20 +72,8 @@ public:
      * @param fromIndex Segment start index (inclusive)
      * @param toIndex Segment end index (inclusive)
      */
-    void fill(const Pixel &color, size_type fromIndex, size_type toIndex)
-    {
-        if (fromIndex <= toIndex)
-            for (size_type i = fromIndex;
-                 (i < this->size()) && (i <= toIndex);
-                 i++)
-            {
-                (*this)[i] = color;
-            }
-        else
-            fill(color, toIndex, fromIndex);
-    }
+    void fill(const Pixel &color, size_type fromIndex, size_type toIndex);
 
     // Do not hide constructors
     using ::std::vector<Pixel>::vector;
-
 }; // PixelVector
