@@ -22,7 +22,7 @@
  * @brief Matrix of pixels
  *
  */
-struct PixelMatrix : public ::std::vector<PixelVector>
+struct PixelMatrix : public PixelVector
 {
     using size_type = typename PixelVector::size_type;
     using initializer_list_type =
@@ -84,14 +84,14 @@ struct PixelMatrix : public ::std::vector<PixelVector>
      *
      * @return size_type Number of rows
      */
-    size_type row_count() const noexcept;
+    size_type row_count() const noexcept { return rows; }
 
     /**
      * @brief Get the number of columns in this matrix
      *
      * @return size_type Number of columns
      */
-    size_type column_count() const noexcept;
+    size_type column_count() const noexcept { return columns; }
 
     /**
      * @brief Fill the entire matrix with a pixel color
@@ -129,5 +129,6 @@ struct PixelMatrix : public ::std::vector<PixelVector>
     void scroll_down(size_type count) noexcept;
 
 private:
-    void init(size_type rows, size_type columns, Pixel color) noexcept;
+    size_type rows;
+    size_type columns;
 };
