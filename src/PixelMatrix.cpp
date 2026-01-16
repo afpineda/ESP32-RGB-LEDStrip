@@ -269,3 +269,64 @@ void LedMatrixDefinition::indexToCoordinates(
     indexToCoordinates(index, row, col);
     return (row * column_count) + col;
 }
+
+void LedMatrixDefinition::flipVertical()
+{
+    switch (first_pixel)
+    {
+    case LedMatrixFirstPixel::top_left:
+        first_pixel = LedMatrixFirstPixel::bottom_left;
+        break;
+    case LedMatrixFirstPixel::top_right:
+        first_pixel = LedMatrixFirstPixel::bottom_right;
+        break;
+    case LedMatrixFirstPixel::bottom_left:
+        first_pixel = LedMatrixFirstPixel::top_left;
+        break;
+    case LedMatrixFirstPixel::bottom_right:
+        first_pixel = LedMatrixFirstPixel::top_right;
+        break;
+    } // switch
+}
+
+void LedMatrixDefinition::flipHorizontal()
+{
+    switch (first_pixel)
+    {
+    case LedMatrixFirstPixel::top_left:
+        first_pixel = LedMatrixFirstPixel::top_right;
+        break;
+    case LedMatrixFirstPixel::top_right:
+        first_pixel = LedMatrixFirstPixel::top_left;
+        break;
+    case LedMatrixFirstPixel::bottom_left:
+        first_pixel = LedMatrixFirstPixel::bottom_right;
+        break;
+    case LedMatrixFirstPixel::bottom_right:
+        first_pixel = LedMatrixFirstPixel::bottom_left;
+        break;
+    } // switch
+}
+
+void LedMatrixDefinition::rotate90clockwise()
+{
+    if (arrangement == LedMatrixArrangement::rows)
+        arrangement = LedMatrixArrangement::columns;
+    else
+        arrangement = LedMatrixArrangement::rows;
+    switch (first_pixel)
+    {
+    case LedMatrixFirstPixel::top_left:
+        first_pixel = LedMatrixFirstPixel::top_right;
+        break;
+    case LedMatrixFirstPixel::top_right:
+        first_pixel = LedMatrixFirstPixel::bottom_right;
+        break;
+    case LedMatrixFirstPixel::bottom_left:
+        first_pixel = LedMatrixFirstPixel::top_left;
+        break;
+    case LedMatrixFirstPixel::bottom_right:
+        first_pixel = LedMatrixFirstPixel::bottom_left;
+        break;
+    } // switch
+}

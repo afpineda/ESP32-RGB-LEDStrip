@@ -124,6 +124,32 @@ struct LedMatrixDefinition
      * @return ::std::size_t Canonical pixel index
      */
     ::std::size_t canonicalIndex(::std::size_t index) const noexcept;
+
+    /**
+     * @brief Compare to other working parameters
+     *
+     * @param other Working parameters to compare to
+     * @return true If equal
+     * @return false If not equal
+     */
+    bool operator==(const LedMatrixDefinition &other)
+    {
+        return (other.row_count == row_count) &&
+               (other.column_count == column_count) &&
+               (other.first_pixel == first_pixel) &&
+               (other.arrangement == arrangement) &&
+               (other.wiring == wiring);
+    }
+
+    /// @brief Reverse display along the horizontal axis
+    void flipVertical();
+
+    /// @brief Reverse display along the vertical axis
+    void flipHorizontal();
+
+    /// @brief Rotate display 90 degrees clockwise
+    /// @note Make several calls to rotate 180 or 270 degrees.
+    void rotate90clockwise();
 };
 
 /**
