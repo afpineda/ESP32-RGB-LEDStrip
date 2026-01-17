@@ -85,17 +85,6 @@ public:
      */
     virtual void show(const PixelVector &pixels) = 0;
 
-    /**
-     * @brief Turn LEDs off
-     *
-     * @note The implementation may put a limit to @p pixelCount.
-     *       Ignores any display guard.
-     *
-     * @param pixelCount Number of pixels in the LED strip.
-     *                   Do not pass an higher value than needed.
-     */
-    virtual void shutdown(::std::size_t pixelCount) = 0;
-
 }; // RgbLedController
 
 //------------------------------------------------------------------------------

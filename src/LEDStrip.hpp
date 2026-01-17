@@ -57,7 +57,17 @@ public:
     LEDStrip &operator=(const LEDStrip &) = delete;
 
     virtual void show(const PixelVector &pixels) override;
-    virtual void shutdown(::std::size_t pixelCount) override;
+
+    /**
+     * @brief Turn LEDs off
+     *
+     * @note The implementation may put a limit to @p pixelCount.
+     *       Ignores any display guard.
+     *
+     * @param pixelCount Number of pixels in the LED strip.
+     *                   Do not pass an higher value than needed.
+     */
+    void shutdown(::std::size_t pixelCount);
 
     /**
      * @brief Get the global brightness reduction factor
