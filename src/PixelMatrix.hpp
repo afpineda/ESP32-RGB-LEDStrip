@@ -142,17 +142,17 @@ struct LedMatrixParameters
     }
 
     /// @brief Reverse display along the horizontal axis
-    void flipVertical();
+    void flipVertical() noexcept;
 
     /// @brief Reverse display along the vertical axis
-    void flipHorizontal();
+    void flipHorizontal() noexcept;
 
     /// @brief Rotate display 90 degrees clockwise
     /// @note Make several calls to rotate 180 or 270 degrees.
-    void rotate90clockwise();
+    void rotate90clockwise() noexcept;
 
     /// @brief Size in pixels
-    ::std::size_t size() { return (row_count * column_count); }
+    ::std::size_t size() const noexcept { return (row_count * column_count); }
 };
 
 /**

@@ -215,7 +215,7 @@ public:
             onShow(pixels);
     }
 
-    virtual void shutdown(::std::size_t pixelCount) override
+    void shutdown(::std::size_t pixelCount)
     {
         if (onShutdown)
             onShutdown(pixelCount);

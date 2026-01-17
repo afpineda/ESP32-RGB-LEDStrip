@@ -280,7 +280,7 @@ void LedMatrixParameters::indexToCoordinates(
     return (row * column_count) + col;
 }
 
-void LedMatrixParameters::flipVertical()
+void LedMatrixParameters::flipVertical() noexcept
 {
     switch (first_pixel)
     {
@@ -299,7 +299,7 @@ void LedMatrixParameters::flipVertical()
     } // switch
 }
 
-void LedMatrixParameters::flipHorizontal()
+void LedMatrixParameters::flipHorizontal() noexcept
 {
     switch (first_pixel)
     {
@@ -318,8 +318,11 @@ void LedMatrixParameters::flipHorizontal()
     } // switch
 }
 
-void LedMatrixParameters::rotate90clockwise()
+void LedMatrixParameters::rotate90clockwise() noexcept
 {
+    auto tmp = row_count;
+    row_count = column_count;
+    column_count = tmp;
     if (arrangement == LedMatrixArrangement::rows)
         arrangement = LedMatrixArrangement::columns;
     else
