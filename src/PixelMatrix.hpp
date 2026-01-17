@@ -34,9 +34,9 @@ enum class LedMatrixWiring : unsigned char
     ///  @brief The rightmost/bottom pixel in a row/column is connected
     ///         to the leftmost/top pixel in the next row/column.
     linear = 1,
-    /// @brief Alias for "serpentine"
+    /// @brief Alias for "serpentine" in Adafruit's terminology
     zig_zag = serpentine,
-    /// @brief Alias for "linear"
+    /// @brief Alias for "linear" in Adafruit's terminology
     progressive = linear,
 };
 
@@ -189,8 +189,8 @@ struct PixelMatrix : public PixelVector
     /**
      * @brief Create a matrix of pixels
      *
-     * @param rows Number of rows
-     * @param columns Number of columns
+     * @param rows Number of rows (heigh)
+     * @param columns Number of columns (width)
      * @param color Initial color for all cells
      */
     PixelMatrix(size_type rows, size_type columns, Pixel color = 0) noexcept;
@@ -215,6 +215,15 @@ struct PixelMatrix : public PixelVector
      *                  Each row is a list of pixels in ascending order.
      */
     PixelMatrix(const initializer_list_type &init_list) noexcept;
+
+    /**
+     * @brief Resize
+     *
+     * @param rows New number of rows (height)
+     * @param columns New number of columns (width)
+     * @param color  Initial color for all cells
+     */
+    void resize(size_type rows, size_type columns, Pixel color = 0) noexcept;
 
     /**
      * @brief Access to a pixel

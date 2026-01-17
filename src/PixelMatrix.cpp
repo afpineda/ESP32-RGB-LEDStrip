@@ -25,7 +25,7 @@
 
 PixelMatrix::PixelMatrix() noexcept
 {
-    resize(0);
+    PixelVector::resize(0);
     rows = 0;
     columns = 0;
 }
@@ -35,13 +35,23 @@ PixelMatrix::PixelMatrix(
     PixelMatrix::size_type columns,
     Pixel color) noexcept : rows{rows}, columns{columns}
 {
-    resize(rows * columns, color);
+    PixelVector::resize(rows * columns, color);
 }
 
 PixelMatrix::PixelMatrix(
     const PixelMatrix::initializer_list_type &init_list) noexcept
 {
     *this = init_list;
+}
+
+void PixelMatrix::resize(
+    PixelMatrix::size_type rows,
+    PixelMatrix::size_type columns,
+    Pixel color) noexcept
+{
+    PixelVector::resize(rows * columns, color);
+    this->rows = rows;
+    this->columns = columns;
 }
 
 PixelMatrix &PixelMatrix::operator=(
@@ -55,7 +65,7 @@ PixelMatrix &PixelMatrix::operator=(
 
     // Resize
     rows = init_list.size();
-    resize(rows * columns);
+    PixelVector::resize(rows * columns);
 
     // Copy pixels
     PixelMatrix::size_type row = 0;
