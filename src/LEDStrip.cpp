@@ -13,12 +13,11 @@
 //-------------------------------------------------------------------
 
 #include "LEDStrip.hpp"
-#include "Arduino.h" // Required for conditional compilation
 
 //------------------------------------------------------------------------------
 // ESP32 implementation
 //------------------------------------------------------------------------------
-#if defined(ESP_ARDUINO_VERSION_MAJOR)
+#if defined(ARDUINO_ARCH_ESP32) || defined(ESP_PLATFORM)
 //------------------------------------------------------------------------------
 
 #include <cassert>
