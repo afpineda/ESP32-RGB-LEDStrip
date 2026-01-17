@@ -139,12 +139,12 @@ void PixelMatrix::scroll_down(PixelMatrix::size_type count) noexcept
 }
 
 //------------------------------------------------------------------------------
-// LedMatrixDefinition
+// LedMatrixParameters
 //------------------------------------------------------------------------------
 
 #define INV(size, value) (((size) - 1) - (value))
 
-void LedMatrixDefinition::indexToCoordinates(
+void LedMatrixParameters::indexToCoordinates(
     ::std::size_t index,
     ::std::size_t &row,
     ::std::size_t &col) const noexcept
@@ -182,7 +182,7 @@ void LedMatrixDefinition::indexToCoordinates(
     }
 }
 
-::std::size_t LedMatrixDefinition::coordinatesToIndex(
+::std::size_t LedMatrixParameters::coordinatesToIndex(
     ::std::size_t row,
     ::std::size_t col) const noexcept
 {
@@ -272,7 +272,7 @@ void LedMatrixDefinition::indexToCoordinates(
     return (::std::size_t)-1;
 }
 
-::std::size_t LedMatrixDefinition::canonicalIndex(
+::std::size_t LedMatrixParameters::canonicalIndex(
     ::std::size_t index) const noexcept
 {
     ::std::size_t row, col;
@@ -280,7 +280,7 @@ void LedMatrixDefinition::indexToCoordinates(
     return (row * column_count) + col;
 }
 
-void LedMatrixDefinition::flipVertical()
+void LedMatrixParameters::flipVertical()
 {
     switch (first_pixel)
     {
@@ -299,7 +299,7 @@ void LedMatrixDefinition::flipVertical()
     } // switch
 }
 
-void LedMatrixDefinition::flipHorizontal()
+void LedMatrixParameters::flipHorizontal()
 {
     switch (first_pixel)
     {
@@ -318,7 +318,7 @@ void LedMatrixDefinition::flipHorizontal()
     } // switch
 }
 
-void LedMatrixDefinition::rotate90clockwise()
+void LedMatrixParameters::rotate90clockwise()
 {
     if (arrangement == LedMatrixArrangement::rows)
         arrangement = LedMatrixArrangement::columns;

@@ -72,7 +72,7 @@ enum class LedMatrixArrangement : unsigned char
  * @brief Working parameters of an LED matrix
  *
  */
-struct LedMatrixDefinition
+struct LedMatrixParameters
 {
     /// @brief Number of rows
     ::std::size_t row_count = 0;
@@ -132,7 +132,7 @@ struct LedMatrixDefinition
      * @return true If equal
      * @return false If not equal
      */
-    bool operator==(const LedMatrixDefinition &other)
+    bool operator==(const LedMatrixParameters &other)
     {
         return (other.row_count == row_count) &&
                (other.column_count == column_count) &&
@@ -202,7 +202,7 @@ struct PixelMatrix : public PixelVector
      * @param color Initial color for all cells
      */
     PixelMatrix(
-        const LedMatrixDefinition &def,
+        const LedMatrixParameters &def,
         Pixel color = 0) noexcept
         : PixelMatrix(def.row_count, def.column_count, color) {}
 
@@ -319,7 +319,7 @@ struct PixelMatrix : public PixelVector
      * @return true If suitable
      * @return false If not
      */
-    bool suitable_for(const LedMatrixDefinition &def)
+    bool suitable_for(const LedMatrixParameters &def)
     {
         return (rows == def.row_count) && (columns = def.column_count);
     }

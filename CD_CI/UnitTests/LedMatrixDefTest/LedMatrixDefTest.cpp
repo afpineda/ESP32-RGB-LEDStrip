@@ -27,7 +27,7 @@ using namespace std;
 #define ROWS 3
 #define COLUMNS 3
 
-static const LedMatrixDefinition test_case[] =
+static const LedMatrixParameters test_case[] =
     {
         // 0: top-left, rows, serpentine
         {
@@ -159,7 +159,7 @@ static const LedMatrixDefinition test_case[] =
         },
 };
 
-#define TEST_CASE_COUNT (sizeof(test_case) / sizeof(LedMatrixDefinition))
+#define TEST_CASE_COUNT (sizeof(test_case) / sizeof(LedMatrixParameters))
 
 // Note:
 // PixelMatrix is used here as a container of numbers
@@ -273,7 +273,7 @@ static_assert(
 // Auxiliary
 //-------------------------------------------------------------------
 
-PixelMatrix build(const LedMatrixDefinition &source)
+PixelMatrix build(const LedMatrixParameters &source)
 {
     PixelMatrix result(ROWS, COLUMNS);
     for (size_t i = 0; i < (ROWS * COLUMNS); i++)
@@ -381,42 +381,42 @@ void test4()
 {
     cout << "- Flip vertical -" << endl;
     {
-        LedMatrixDefinition test = test_case[0];
+        LedMatrixParameters test = test_case[0];
         test.flipVertical();
         assert(test == test_case[4]);
     }
     {
-        LedMatrixDefinition test = test_case[1];
+        LedMatrixParameters test = test_case[1];
         test.flipVertical();
         assert(test == test_case[5]);
     }
     {
-        LedMatrixDefinition test = test_case[2];
+        LedMatrixParameters test = test_case[2];
         test.flipVertical();
         assert(test == test_case[6]);
     }
     {
-        LedMatrixDefinition test = test_case[3];
+        LedMatrixParameters test = test_case[3];
         test.flipVertical();
         assert(test == test_case[7]);
     }
     {
-        LedMatrixDefinition test = test_case[4];
+        LedMatrixParameters test = test_case[4];
         test.flipVertical();
         assert(test == test_case[0]);
     }
     {
-        LedMatrixDefinition test = test_case[5];
+        LedMatrixParameters test = test_case[5];
         test.flipVertical();
         assert(test == test_case[1]);
     }
     {
-        LedMatrixDefinition test = test_case[6];
+        LedMatrixParameters test = test_case[6];
         test.flipVertical();
         assert(test == test_case[2]);
     }
     {
-        LedMatrixDefinition test = test_case[7];
+        LedMatrixParameters test = test_case[7];
         test.flipVertical();
         assert(test == test_case[3]);
     }
@@ -426,42 +426,42 @@ void test5()
 {
     cout << "- Flip horizontal -" << endl;
     {
-        LedMatrixDefinition test = test_case[0];
+        LedMatrixParameters test = test_case[0];
         test.flipHorizontal();
         assert(test == test_case[2]);
     }
     {
-        LedMatrixDefinition test = test_case[1];
+        LedMatrixParameters test = test_case[1];
         test.flipHorizontal();
         assert(test == test_case[3]);
     }
     {
-        LedMatrixDefinition test = test_case[2];
+        LedMatrixParameters test = test_case[2];
         test.flipHorizontal();
         assert(test == test_case[0]);
     }
     {
-        LedMatrixDefinition test = test_case[3];
+        LedMatrixParameters test = test_case[3];
         test.flipHorizontal();
         assert(test == test_case[1]);
     }
     {
-        LedMatrixDefinition test = test_case[4];
+        LedMatrixParameters test = test_case[4];
         test.flipHorizontal();
         assert(test == test_case[6]);
     }
     {
-        LedMatrixDefinition test = test_case[5];
+        LedMatrixParameters test = test_case[5];
         test.flipHorizontal();
         assert(test == test_case[7]);
     }
     {
-        LedMatrixDefinition test = test_case[6];
+        LedMatrixParameters test = test_case[6];
         test.flipHorizontal();
         assert(test == test_case[4]);
     }
     {
-        LedMatrixDefinition test = test_case[7];
+        LedMatrixParameters test = test_case[7];
         test.flipHorizontal();
         assert(test == test_case[5]);
     }
@@ -472,42 +472,42 @@ void test6()
 {
     cout << "- Rotate 90 degrees clockwise -" << endl;
     {
-        LedMatrixDefinition test = test_case[0];
+        LedMatrixParameters test = test_case[0];
         test.rotate90clockwise();
         assert(test == test_case[10]);
     }
     {
-        LedMatrixDefinition test = test_case[1];
+        LedMatrixParameters test = test_case[1];
         test.rotate90clockwise();
         assert(test == test_case[11]);
     }
     {
-        LedMatrixDefinition test = test_case[2];
+        LedMatrixParameters test = test_case[2];
         test.rotate90clockwise();
         assert(test == test_case[14]);
     }
     {
-        LedMatrixDefinition test = test_case[3];
+        LedMatrixParameters test = test_case[3];
         test.rotate90clockwise();
         assert(test == test_case[15]);
     }
     {
-        LedMatrixDefinition test = test_case[4];
+        LedMatrixParameters test = test_case[4];
         test.rotate90clockwise();
         assert(test == test_case[8]);
     }
     {
-        LedMatrixDefinition test = test_case[5];
+        LedMatrixParameters test = test_case[5];
         test.rotate90clockwise();
         assert(test == test_case[9]);
     }
     {
-        LedMatrixDefinition test = test_case[6];
+        LedMatrixParameters test = test_case[6];
         test.rotate90clockwise();
         assert(test == test_case[12]);
     }
     {
-        LedMatrixDefinition test = test_case[7];
+        LedMatrixParameters test = test_case[7];
         test.rotate90clockwise();
         assert(test == test_case[13]);
     }
