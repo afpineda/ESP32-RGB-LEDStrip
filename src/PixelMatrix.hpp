@@ -150,6 +150,9 @@ struct LedMatrixParameters
     /// @brief Rotate display 90 degrees clockwise
     /// @note Make several calls to rotate 180 or 270 degrees.
     void rotate90clockwise();
+
+    /// @brief Size in pixels
+    ::std::size_t size() { return (row_count * column_count); }
 };
 
 /**
