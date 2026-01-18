@@ -191,3 +191,43 @@ As simple as that.
 This works with non-threaded applications as well.
 The guard is automatically released when the `guard` variable
 goes out of scope.
+
+## Experimental support for LED matrices
+
+> [!IMPORTANT]
+> The support for LED matrices has not been tested using real hardware.
+
+An LED matrix is simply a regular LED strip with
+a specific pixel arrangement in rows and columns.
+
+Features:
+
+- Any pixel driver already supported for LED strips.
+- Any size.
+- Any wiring schema via three parameters:
+
+  - Location of the first pixel
+  - Internal wiring (serpentine or linear)
+  - Arrangement in rows or columns.
+
+  See an [example](./doc/LedMatrixWiringSchemas.md).
+
+- All the features of LED strips,
+  including prioritized display.
+
+> [!NOTE]
+> Tiling is not supported.
+
+### Concepts and involved classes
+
+- Class `LEDMatrix`:
+  represents an LED strip able to display pixels in
+  a 2D matrix.
+- Class `LEDMatrixParameters`:
+  specifies the physical arrangement of pixels in the underlying LED strip.
+- Class `PixelMatrix`: holds a
+  "[raster graphic](https://en.wikipedia.org/wiki/Raster_graphics)"
+  in the usual *row-major* format.
+  You can take advantage of raster graphic libraries
+  thanks to `PixelMatrix::data()`.
+  This is an specialization of `PixelVector`.
