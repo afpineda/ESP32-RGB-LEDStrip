@@ -231,3 +231,29 @@ Features:
   You can take advantage of raster graphic libraries
   thanks to `PixelMatrix::data()`.
   This is an specialization of `PixelVector`.
+
+### LEDMatrix and PixelMatrix sizes
+
+The size (the number of rows and columns)
+of the physical LED matrix must match the size of the `PixelMatrix` instance,
+**but the library does not enforce this**.
+Otherwise, the library will display pixels in the wrong LEDs.
+To ensure this constraint, you have two options:
+
+- Via assertions, for example:
+
+  ```c++
+  #include <cassert>
+  ...
+  PixelMatrix pixel_matrix(24,24);
+  assert(pixel_matrix.suitable_for(led_matrix.parameters()));
+  ```
+
+- Via delegation (**preferred**), for example:
+
+  ```c++
+  // Create a new PixelMatrix instance suitable for led_matrix
+  PixelMatrix pixel_matrix = led_matrix.pixelMatrix();
+  ```
+
+  Note: `LEDMatrix` does not own instances of `PixelMatrix`.
