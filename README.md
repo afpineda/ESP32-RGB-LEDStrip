@@ -1,9 +1,9 @@
 # RGB LED library with non-blocking multi-threading support
 
 This project features a modern C++ library for
-displaying pixels in RGB LED strips.
+displaying pixels in RGB LED strips (and LED matrices).
 It is designed to be extensible to other RGB LED controllers
-and CPU architectures, not only LED strips.
+(not only LED strips) and CPU architectures.
 It capitalizes experience from
 [another project](https://github.com/afpineda/OpenSourceSimWheelESP32).
 
@@ -208,7 +208,7 @@ goes out of scope.
 - It is recommended to call `LEDStrip::shutdown()` at program startup
   because pixels continue to lit after a system reset.
 
-- The count of pixels in the `LEDStrip` instance is used in the
+- The count of pixels in the `LEDStrip` instance is required for the
   `shutdown()` method only.
 
 ## Experimental support for LED matrices
