@@ -246,7 +246,7 @@ To ensure this constraint, you have two options:
   #include <cassert>
   ...
   PixelMatrix pixel_matrix(24,24);
-  assert(pixel_matrix.suitable_for(led_matrix.parameters()));
+  assert(pixel_matrix.size()==led_matrix.parameters().size());
   ```
 
 - Via delegation (**preferred**), for example:

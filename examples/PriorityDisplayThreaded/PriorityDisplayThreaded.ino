@@ -18,6 +18,10 @@
 //------------------------------------------------------------------
 
 // CONFIGURE TO YOUR NEEDS
+// Number of pixels in the LED strip
+#define PIXEL_COUNT 8
+
+// CONFIGURE TO YOUR NEEDS
 // Data pin
 #define DATA_PIN 39
 
@@ -37,7 +41,7 @@
 //------------------------------------------------------------------
 
 #define LOOP_DELAY 50
-LED_STRIP_CLASS strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
+LED_STRIP_CLASS strip(PIXEL_COUNT, DATA_PIN, OPEN_DRAIN, true, REVERSED);
 
 //------------------------------------------------------------------
 // Auxiliary
@@ -46,10 +50,10 @@ LED_STRIP_CLASS strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
 void whiteColorAnimation()
 {
     RgbGuard guard(strip, 0);
-    PixelVector pixels(8);
+    PixelVector pixels(PIXEL_COUNT);
     while (true)
     {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < PIXEL_COUNT; i++)
         {
             pixels.fill(0);
             pixels[i] = 0xFFFFFF;
@@ -62,8 +66,8 @@ void whiteColorAnimation()
 void redColorAnimation()
 {
     RgbGuard guard(strip, 8);
-    PixelVector pixels(8);
-    for (int i = 0; i < 8; i++)
+    PixelVector pixels(PIXEL_COUNT);
+    for (int i = 0; i < PIXEL_COUNT; i++)
     {
         pixels.fill(0);
         pixels[i] = 0xFF0000;
@@ -79,7 +83,7 @@ void redColorAnimation()
 void setup()
 {
     strip.brightness(127);
-    strip.shutdown(8);
+    strip.shutdown();
     Serial.begin(115200);
     Serial.println("==Display priority test #2==");
     Serial.println("A white color animation should display.");

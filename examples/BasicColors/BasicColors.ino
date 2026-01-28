@@ -14,6 +14,9 @@
 //------------------------------------------------------------------
 // Globals
 //------------------------------------------------------------------
+// CONFIGURE TO YOUR NEEDS
+// Number of pixels in the LED strip
+#define PIXEL_COUNT 8
 
 // CONFIGURE TO YOUR NEEDS
 // Data pin
@@ -27,10 +30,13 @@
 // True to display pixels in reverse order
 #define REVERSED false
 
+// CONFIGURE TO YOUR NEEDS
+#define LED_STRIP_CLASS WS2812LEDStrip
+
 //------------------------------------------------------------------
 
 // CONFIGURE TO YOUR NEEDS
-WS2812LEDStrip strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
+LED_STRIP_CLASS strip(PIXEL_COUNT, DATA_PIN, OPEN_DRAIN, true, REVERSED);
 
 //------------------------------------------------------------------
 // Arduino entry point
@@ -61,7 +67,7 @@ void loop()
         while (Serial.read() >= 0)
             ;
         Serial.println("Shutdown for 5 seconds...");
-        strip.shutdown(8);
+        strip.shutdown();
         delay(5000);
         strip.brightness(255);
         Serial.println("Restarting...");

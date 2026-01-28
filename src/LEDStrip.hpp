@@ -23,7 +23,7 @@
 //------------------------------------------------------------------------------
 
 /**
- * @brief Custom LED strip (any pixel driver)
+ * @brief Custom LED strip or LED matrix (any pixel driver)
  *
  */
 class LEDStrip : public RgbLedController
@@ -36,6 +36,8 @@ public:
     /**
      * @brief Construct an LED strip using a custom pixel driver
      *
+     * @param pixelCount Number of pixels in the LED strip.
+     *                   Do not pass an higher value than needed.
      * @param dataPin Data transmission pin number
      * @param openDrain True to use open drain output
      * @param useDMA True to use direct memory access (if available)
@@ -44,11 +46,28 @@ public:
      *                 is the inverse of their logical order
      */
     LEDStrip(
+        ::std::size_t pixelCount,
         int dataPin,
         bool openDrain,
         bool useDMA,
         PixelDriver pixelDriver,
         bool reversed);
+
+    /**
+     * @brief Construct an LED matrix (2D LED strip)
+     *
+     * @param params Working parameters of the LED matrix
+     * @param dataPin Data transmission pin number
+     * @param openDrain True to use open drain output
+     * @param useDMA True to use direct memory access (if available)
+     * @param pixelDriver Working parameters of the pixel driver
+     */
+    LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain,
+        bool useDMA,
+        PixelDriver pixelDriver);
 
     virtual ~LEDStrip();
     LEDStrip(LEDStrip &&);
@@ -59,15 +78,11 @@ public:
     virtual void show(const PixelVector &pixels) override;
 
     /**
-     * @brief Turn LEDs off
+     * @brief Turn all LEDs off
      *
-     * @note The implementation may put a limit to @p pixelCount.
-     *       Ignores any display guard.
-     *
-     * @param pixelCount Number of pixels in the LED strip.
-     *                   Do not pass an higher value than needed.
+     * @note Ignores any display guard.
      */
-    void shutdown(::std::size_t pixelCount);
+    void shutdown();
 
     /**
      * @brief Get the global brightness reduction factor
@@ -104,7 +119,28 @@ public:
      * @warning You must call this method if the CPU frequency changes
      */
     static void syncWithCPUFrequency();
+
+    /**
+     * @brief Get the LED matrix working parameters
+     *
+     * @return const LedMatrixParameters& A read-only copy of
+     *                                    the working parameters.
+     *                                    If this is an 1D led strip,
+     *                                    it returns the equivalent LED matrix
+     *                                    parameters, having a single row.
+     */
+    const LedMatrixParameters &parameters() const noexcept;
+
+    /**
+     * @brief Retrieve a suitable pixel matrix for this LED strip
+     *
+     * @param color Initial color for all pixels
+     * @return PixelMatrix Pixel matrix object
+     */
+    PixelMatrix pixelMatrix(const Pixel &color = 0) const noexcept;
 };
+
+typedef LEDStrip LEDMatrix;
 
 //------------------------------------------------------------------------------
 
@@ -113,11 +149,12 @@ class WS2811LEDStrip : public LEDStrip
 {
 public:
     WS2811LEDStrip(
+        ::std::size_t pixelCount,
         int dataPin,
         bool openDrain = true,
         bool useDMA = false,
         bool reversed = false)
-        : LEDStrip(dataPin, openDrain, useDMA, WS2811, reversed) {}
+        : LEDStrip(pixelCount, dataPin, openDrain, useDMA, WS2811, reversed) {}
     WS2811LEDStrip(WS2811LEDStrip &&) = default;
     WS2811LEDStrip &operator=(WS2811LEDStrip &&) = default;
 };
@@ -127,11 +164,12 @@ class WS2812LEDStrip : public LEDStrip
 {
 public:
     WS2812LEDStrip(
+        ::std::size_t pixelCount,
         int dataPin,
         bool openDrain = true,
         bool useDMA = false,
         bool reversed = false)
-        : LEDStrip(dataPin, openDrain, useDMA, WS2812, reversed) {}
+        : LEDStrip(pixelCount, dataPin, openDrain, useDMA, WS2812, reversed) {}
     WS2812LEDStrip(WS2812LEDStrip &&) = default;
     WS2812LEDStrip &operator=(WS2812LEDStrip &&) = default;
 };
@@ -141,11 +179,12 @@ class WS2815LEDStrip : public LEDStrip
 {
 public:
     WS2815LEDStrip(
+        ::std::size_t pixelCount,
         int dataPin,
         bool openDrain = true,
         bool useDMA = false,
         bool reversed = false)
-        : LEDStrip(dataPin, openDrain, useDMA, WS2815, reversed) {}
+        : LEDStrip(pixelCount, dataPin, openDrain, useDMA, WS2815, reversed) {}
     WS2815LEDStrip(WS2815LEDStrip &&) = default;
     WS2815LEDStrip &operator=(WS2815LEDStrip &&) = default;
 };
@@ -155,11 +194,12 @@ class SK6812LEDStrip : public LEDStrip
 {
 public:
     SK6812LEDStrip(
+        ::std::size_t pixelCount,
         int dataPin,
         bool openDrain = true,
         bool useDMA = false,
         bool reversed = false)
-        : LEDStrip(dataPin, openDrain, useDMA, SK6812, reversed) {}
+        : LEDStrip(pixelCount, dataPin, openDrain, useDMA, SK6812, reversed) {}
     SK6812LEDStrip(SK6812LEDStrip &&) = default;
     SK6812LEDStrip &operator=(SK6812LEDStrip &&) = default;
 };
@@ -169,11 +209,12 @@ class UCS1903LEDStrip : public LEDStrip
 {
 public:
     UCS1903LEDStrip(
+        ::std::size_t pixelCount,
         int dataPin,
         bool openDrain = true,
         bool useDMA = false,
         bool reversed = false)
-        : LEDStrip(dataPin, openDrain, useDMA, UCS1903, reversed) {}
+        : LEDStrip(pixelCount, dataPin, openDrain, useDMA, UCS1903, reversed) {}
     UCS1903LEDStrip(UCS1903LEDStrip &&) = default;
     UCS1903LEDStrip &operator=(UCS1903LEDStrip &&) = default;
 };

@@ -18,6 +18,10 @@
 //------------------------------------------------------------------
 
 // CONFIGURE TO YOUR NEEDS
+// Number of pixels in the LED strip
+#define PIXEL_COUNT 8
+
+// CONFIGURE TO YOUR NEEDS
 // Data pin
 #define DATA_PIN 39
 
@@ -38,7 +42,7 @@
 
 #define LOOP_DELAY 50
 uint8_t selectedPriority = 0;
-LED_STRIP_CLASS strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
+LED_STRIP_CLASS strip(PIXEL_COUNT, DATA_PIN, OPEN_DRAIN, true, REVERSED);
 
 //------------------------------------------------------------------
 // Arduino entry point
@@ -47,7 +51,7 @@ LED_STRIP_CLASS strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
 void setup()
 {
     strip.brightness(127);
-    strip.shutdown(8);
+    strip.shutdown();
     Serial.begin(115200);
     Serial.println("==Display priority test==");
     Serial.println("White color has display priority 5");
@@ -68,9 +72,9 @@ void loop()
     }
     RgbGuard white_guard(strip, 5);
     RgbGuard red_guard(strip, selectedPriority);
-    PixelVector white_pixels(8);
-    PixelVector red_pixels(8);
-    for (int i = 0; i < 8; i++)
+    PixelVector white_pixels(PIXEL_COUNT);
+    PixelVector red_pixels(PIXEL_COUNT);
+    for (int i = 0; i < PIXEL_COUNT; i++)
     {
         red_pixels.fill(0);
         red_pixels[i] = 0xFF0000;

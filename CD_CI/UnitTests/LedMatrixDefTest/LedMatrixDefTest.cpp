@@ -13,7 +13,8 @@
 // Imports
 //-------------------------------------------------------------------
 
-#include "PixelMatrix.hpp"
+#include "PixelDriver.hpp"
+#include "PixelVector.hpp"
 #include <iostream>
 #include <cassert>
 #include <string>
@@ -467,7 +468,6 @@ void test5()
     }
 }
 
-
 void test6()
 {
     cout << "- Rotate 90 degrees clockwise -" << endl;
@@ -513,6 +513,35 @@ void test6()
     }
 }
 
+void test7()
+{
+    cout << "- 1D LED matrix (LED strip) parameters -" << endl;
+    {
+        LedMatrixParameters test = basicLedStriParameters;
+        test.column_count = 3;
+        int idx = test.canonicalIndex(0);
+        assert(idx == 0);
+        idx = test.canonicalIndex(1);
+        assert(idx == 1);
+        idx = test.canonicalIndex(2);
+        assert(idx == 2);
+    }
+}
+
+void test8()
+{
+    cout << "- Reversed 1D LED matrix (LED strip) parameters -" << endl;
+    {
+        LedMatrixParameters test = basicReversedLedStriParameters;
+        test.column_count = 3;
+        int idx = test.canonicalIndex(0);
+        assert(idx == 2);
+        idx = test.canonicalIndex(1);
+        assert(idx == 1);
+        idx = test.canonicalIndex(2);
+        assert(idx == 0);
+    }
+}
 //-------------------------------------------------------------------
 // MAIN
 //-------------------------------------------------------------------
@@ -525,5 +554,7 @@ int main()
     test4();
     test5();
     test6();
+    test7();
+    test8();
     return 0;
 }

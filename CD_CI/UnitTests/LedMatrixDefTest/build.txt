@@ -1,4 +1,3 @@
 LedMatrixDefTest.cpp
-PixelMatrix.cpp
+PixelDriver.cpp
 PixelVector.cpp
-Pixel.cpp

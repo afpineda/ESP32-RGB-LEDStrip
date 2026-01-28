@@ -9,7 +9,8 @@
  * @copyright Under EUPL 1.2 License
  */
 
-#include "LEDMatrix.hpp"
+#include "LEDStrip.hpp"
+#include <cassert>
 
 //------------------------------------------------------------------
 // Configurable globals
@@ -47,11 +48,11 @@ static constexpr const LedMatrixParameters params{
 
 #define LOOP_DELAY 1000
 LEDMatrix led_matrix(
+    params,
     DATA_PIN,
     OPEN_DRAIN,
     true,
-    LED_STRIP_DRIVER,
-    params);
+    LED_STRIP_DRIVER);
 PixelMatrix pixels;
 bool animate = false;
 
@@ -65,7 +66,10 @@ void setup()
     led_matrix.shutdown();
     led_matrix.brightness(127);
 
+    // Create a suitable pixel matrix
     pixels = led_matrix.pixelMatrix();
+    // For demonstration purposes (this assertion is not needed):
+    assert(pixels.size()==led_matrix.parameters().size());
 
     for (size_t row = 0; row < pixels.row_count(); row++)
     {

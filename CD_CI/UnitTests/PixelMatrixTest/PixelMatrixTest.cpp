@@ -12,7 +12,7 @@
 // Imports
 //-------------------------------------------------------------------
 
-#include "PixelMatrix.hpp"
+#include "PixelVector.hpp"
 #include <iostream>
 #include <cassert>
 #include <string>

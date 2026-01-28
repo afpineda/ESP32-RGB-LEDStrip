@@ -69,7 +69,7 @@ private:
     /// @brief RMT symbol count per encoded byte
     static constexpr size_t symbols_per_byte = 8;
     /// @brief RMT symbol count per pixel
-    static constexpr size_t symbols_per_pixel = 3 * symbols_per_byte;
+    static constexpr size_t symbols_per_pixel = sizeof(Pixel) * symbols_per_byte;
     /// @brief Transmission handle
     rmt_channel_handle_t rmtHandle = nullptr;
     /// @brief Pixel encoder handle
@@ -80,37 +80,35 @@ private:
     PixelDriver driver;
     /// @brief Nanoseconds per active wait loop
     static inline uint32_t ns_per_loop = 17;
-    /// @brief True if the physical arrangement of the pixels
-    ///        is the inverse of their logical order
-    bool reversed = false;
 
 public:
     /// @brief Global brightness correction factor in the range [1,256]
     uint16_t brightness = 256;
+    /// @brief Working parameters of the LED matrix
+    LedMatrixParameters params;
 
     /**
      * @brief Initialize the RMT hardware
      *
+     * @param params Working parameters of the LED matrix
      * @param dataPin Data output pin
      * @param openDrain Wether to use open drain or not
      * @param useDMA Wether to use DMA or not
      * @param driver Pixel driver
-     * @param reversed True if the physical arrangement of the pixels
-     *                 is the inverse of their logical order
      */
     void initialize(
+        const LedMatrixParameters &params,
         int dataPin,
         bool openDrain,
         bool useDMA,
-        PixelDriver driver,
-        bool reversed)
+        PixelDriver driver)
     {
         // Check parameters
         if (!GPIO_IS_VALID_OUTPUT_GPIO(dataPin))
         {
             ESP_LOGE(
                 LOG_TAG,
-                "Pin %d is not output-capable in LED strip",
+                "Pin %d is not output-capable in LED strip/matrix",
                 dataPin);
             abort();
         }
@@ -177,7 +175,7 @@ public:
 
         // Initialize instance members
         this->driver = driver;
-        this->reversed = reversed;
+        this->params = params;
         syncWithCPUFrequency();
     } // initialize()
 
@@ -192,7 +190,7 @@ public:
      * @param symbols_free Count of symbols available in the transmit buffer
      * @param symbols Pointer to the transmit buffer
      * @param done Pointer to end of transaction flag
-     * @param arg Pointer to the LEDStrip::Implementation instance
+     * @param arg Pointer to the LEDMatrix::Implementation instance
      * @return size_t Symbols written
      */
     static size_t pixels_rmt_encoder(
@@ -214,27 +212,30 @@ public:
         else
         {
             LEDStrip::Implementation *instance =
-                static_cast<LEDStrip::Implementation *>(arg);
+                static_cast<LEDMatrix::Implementation *>(arg);
             const Pixel *pixel_ptr = static_cast<const Pixel *>(data);
             size_t previous_symbols_written = symbols_written;
             size_t pixelIndex = (symbols_written / symbols_per_pixel);
-            if (instance->reversed)
-                pixelIndex = (data_size / 3) - (pixelIndex + 1);
             while (
                 (symbols_free >= symbols_per_pixel) &&
                 (symbols_written < total_symbol_count))
             {
                 uint8_t byte[3];
+                size_t canonicalIndex =
+                    instance->params.canonicalIndex(pixelIndex);
                 byte[0] =
-                    (pixel_ptr[pixelIndex].byte0(instance->driver.pixelFormat) *
+                    (pixel_ptr[canonicalIndex]
+                         .byte0(instance->driver.pixelFormat) *
                      instance->brightness) >>
                     8;
                 byte[1] =
-                    (pixel_ptr[pixelIndex].byte1(instance->driver.pixelFormat) *
+                    (pixel_ptr[canonicalIndex]
+                         .byte1(instance->driver.pixelFormat) *
                      instance->brightness) >>
                     8;
                 byte[2] =
-                    (pixel_ptr[pixelIndex].byte2(instance->driver.pixelFormat) *
+                    (pixel_ptr[canonicalIndex]
+                         .byte2(instance->driver.pixelFormat) *
                      instance->brightness) >>
                     8;
 
@@ -278,10 +279,7 @@ public:
                 }
                 symbols_written += symbols_per_pixel;
                 symbols_free -= symbols_per_pixel;
-                if (instance->reversed)
-                    pixelIndex--;
-                else
-                    pixelIndex++;
+                pixelIndex++;
             }
             // Note: when the return value is 0,
             // we ask for the rmt tx channel to free more buffer space
@@ -298,7 +296,7 @@ public:
      * @param symbols_free Count of symbols available in the transmit buffer
      * @param symbols Pointer to the transmit buffer
      * @param done Pointer to end of transaction flag
-     * @param arg Pointer to the LEDStrip::Implementation instance
+     * @param arg Pointer to the LEDMatrix::Implementation instance
      * @return size_t Symbols written
      */
     static size_t shutdown_rmt_encoder(
@@ -344,7 +342,7 @@ public:
                 rmtHandle,
                 pixel_encoder_handle,
                 pixels.data(),
-                pixels.size() * 3,
+                pixels.size() * sizeof(Pixel),
                 &rmt_transmit_config));
         ESP_ERROR_CHECK(
             rmt_tx_wait_all_done(
@@ -353,7 +351,7 @@ public:
         active_wait_ns(driver.restTime.count());
     } // show()
 
-    void shutdown(::std::size_t pixelCount)
+    void shutdown()
     {
         rmt_simple_encoder_config_t cfg{
             .callback = shutdown_rmt_encoder,
@@ -371,7 +369,7 @@ public:
                     rmtHandle,
                     shutdown_encoder_handle,
                     &cfg, // Note: not used
-                    pixelCount * 3,
+                    params.size() * sizeof(Pixel),
                     &rmt_transmit_config));
             ESP_ERROR_CHECK(
                 rmt_tx_wait_all_done(
@@ -393,7 +391,7 @@ public:
         pixel_encoder_handle = source.pixel_encoder_handle;
         byte_enc_config = source.byte_enc_config;
         driver = source.driver;
-        reversed = source.reversed;
+        params = source.params;
         source.rmtHandle = nullptr;
         source.pixel_encoder_handle = nullptr;
     }
@@ -435,7 +433,7 @@ public:
 
 //------------------------------------------------------------------------------
 #else
-#error There is not a LEDStrip implementation for your board
+#error There is not an LEDStrip implementation for your board
 #endif
 
 //------------------------------------------------------------------------------
@@ -452,10 +450,12 @@ LEDStrip::LEDStrip(LEDStrip &&source) : RgbLedController(::std::move(source))
 LEDStrip &LEDStrip::operator=(LEDStrip &&source)
 {
     _impl = ::std::move(source._impl);
-    return static_cast<LEDStrip &>(RgbLedController::operator=(::std::move(source)));
+    return static_cast<LEDStrip &>(
+        RgbLedController::operator=(::std::move(source)));
 }
 
 LEDStrip::LEDStrip(
+    ::std::size_t pixelCount,
     int dataPin,
     bool openDrain,
     bool useDMA,
@@ -463,11 +463,30 @@ LEDStrip::LEDStrip(
     bool reversed) : RgbLedController(),
                      _impl{::std::make_unique<Implementation>()}
 {
-    _impl->initialize(dataPin,
+    LedMatrixParameters params =
+        (reversed)
+            ? basicReversedLedStriParameters
+            : basicLedStriParameters;
+    params.column_count = pixelCount;
+    _impl->initialize(params,
+                      dataPin,
                       openDrain,
                       useDMA,
-                      pixelDriver,
-                      reversed);
+                      pixelDriver);
+}
+
+LEDStrip::LEDStrip(
+    const LedMatrixParameters &params,
+    int dataPin,
+    bool openDrain,
+    bool useDMA,
+    PixelDriver pixelDriver)
+{
+    _impl->initialize(params,
+                      dataPin,
+                      openDrain,
+                      useDMA,
+                      pixelDriver);
 }
 
 void LEDStrip::show(const PixelVector &pixels)
@@ -475,9 +494,9 @@ void LEDStrip::show(const PixelVector &pixels)
     _impl->show(pixels);
 }
 
-void LEDStrip::shutdown(::std::size_t pixelCount)
+void LEDStrip::shutdown()
 {
-    _impl->shutdown(pixelCount);
+    _impl->shutdown();
 }
 
 PixelDriver LEDStrip::pixelDriver() const noexcept
@@ -497,7 +516,21 @@ uint8_t LEDStrip::brightness(uint8_t value)
     return result;
 }
 
+const LedMatrixParameters &LEDMatrix::parameters() const noexcept
+{
+    return _impl->params;
+}
+
 void LEDStrip::syncWithCPUFrequency()
 {
     LEDStrip::Implementation::syncWithCPUFrequency();
+}
+
+PixelMatrix LEDMatrix::pixelMatrix(const Pixel &color) const noexcept
+{
+    PixelMatrix result(
+        _impl->params.row_count,
+        _impl->params.column_count,
+        color);
+    return result;
 }

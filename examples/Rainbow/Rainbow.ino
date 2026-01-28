@@ -17,6 +17,10 @@
 //------------------------------------------------------------------
 
 // CONFIGURE TO YOUR NEEDS
+// Number of pixels in the LED strip
+#define PIXEL_COUNT 8
+
+// CONFIGURE TO YOUR NEEDS
 // Data pin
 #define DATA_PIN 39
 
@@ -36,8 +40,8 @@
 //------------------------------------------------------------------
 
 #define DEFAULT_DELAY 2000
-LED_STRIP_CLASS strip(DATA_PIN, OPEN_DRAIN, true, REVERSED);
-PixelVector pixels(8);
+LED_STRIP_CLASS strip(PIXEL_COUNT, DATA_PIN, OPEN_DRAIN, true, REVERSED);
+PixelVector pixels(7);
 
 //------------------------------------------------------------------
 // Arduino entry point
