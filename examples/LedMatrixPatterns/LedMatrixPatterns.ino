@@ -25,7 +25,7 @@
 #define OPEN_DRAIN false
 
 // CONFIGURE TO YOUR NEEDS
-#define WIDTH 2
+#define WIDTH 3
 
 // CONFIGURE TO YOUR NEEDS
 #define HEIGHT 3
@@ -55,10 +55,10 @@ PixelMatrix pixels;
 
 void chessboard_pattern()
 {
-     // Create a suitable pixel matrix
+    // Create a suitable pixel matrix
     pixels = led_matrix.pixelMatrix();
     // For demonstration purposes (this assertion is not needed):
-    assert(pixels.size()==led_matrix.parameters().size());
+    assert(pixels.size() == led_matrix.parameters().size());
 
     for (size_t row = 0; row < pixels.row_count(); row++)
     {
@@ -68,7 +68,7 @@ void chessboard_pattern()
             if (white)
                 pixels.at(row, col) = 0xFFFFFF;
             else
-                pixels.at(row, col) = 0x00FF00;
+                pixels.at(row, col) = 0;
             white = !white;
         }
     }
@@ -109,12 +109,38 @@ void vertical_pattern()
     led_matrix.show(pixels);
 }
 
+void fill_pattern(Pixel color)
+{
+    pixels = led_matrix.pixelMatrix(color);
+    led_matrix.show(pixels);
+}
+
+void diag1_pattern()
+{
+    pixels = led_matrix.pixelMatrix();
+    for (size_t row = 0; row < pixels.row_count(); row++)
+    {
+        for (size_t col = 0; col < pixels.column_count(); col++)
+        {
+            bool white = (row <= col);
+            if (white)
+                pixels.at(row, col) = 0xFFFFFF;
+            else
+                pixels.at(row, col) = 0xFFFF00;
+        }
+    }
+    led_matrix.show(pixels);
+}
+
 void print_options()
 {
     Serial.println("Type a character to select a display pattern:");
     Serial.println("H = horizontal lines");
     Serial.println("V = vertical lines");
     Serial.println("C = chessboard pattern");
+    Serial.println("D = fill yellow from top-left to right-bottom in diagonal");
+    Serial.println(". = fill black (power off)");
+    Serial.println(": = fill white");
 }
 
 //------------------------------------------------------------------
@@ -139,6 +165,13 @@ void loop()
         vertical_pattern();
     if ((input_chr == 'C') || (input_chr == 'c'))
         chessboard_pattern();
+    if ((input_chr == 'D') || (input_chr == 'd'))
+        diag1_pattern();
+    if ((input_chr == '.'))
+        fill_pattern(0);
+    if ((input_chr == ':'))
+        fill_pattern(0xFFFFFF);
+
     if (input_chr >= ' ')
         print_options();
 }

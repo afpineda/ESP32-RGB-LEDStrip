@@ -61,3 +61,23 @@ Exercised features:
 - Pixel display without priorities.
 - Pixel displacement.
 - Global brightness.
+
+## [Led Matrix patterns](./LedMatrixPatterns/LedMatrixPatterns.ino)
+
+Shows an user-selected pixel pattern in an LED matrix:
+
+- Horizontal lines.
+- Vertical lines.
+- Chessboard pattern.
+- All white
+- All black
+- Half yellow, half white, in diagonal.
+
+Follow on-screen instructions to select a pattern via the serial monitor.
+Type "?" to repeat on-screen instructions.
+
+Exercised features:
+
+- LED matrix constructor.
+- Pixel display without priorities.
+- Global brightness.
