@@ -119,7 +119,7 @@ This workaround will show inaccurate but correct colors without the need
 to provide a 5V power supply.
 
 ```c++
-WS2812LEDStrip strip(DATA_PIN, OPEN_DRAIN);
+WS2812LEDStrip strip(8, DATA_PIN, OPEN_DRAIN);
 strip.brightness(127);
 ```
 
@@ -136,7 +136,7 @@ This method is thread-safe but, in this way, no thread has
 exclusive access to the LED strip.
 
 ```c++
-WS2812LEDStrip strip(DATA_PIN, OPEN_DRAIN);
+WS2812LEDStrip strip(PIXEL_COUNT, DATA_PIN, OPEN_DRAIN);
 PixelVector pixels(7);
 pixels[0] = 0x0EE82E;
 pixels[1] = 0x4B0082;
@@ -192,6 +192,25 @@ This works with non-threaded applications as well.
 The guard is automatically released when the `guard` variable
 goes out of scope.
 
+### Additional notes
+
+- The size (count of pixels) of a `PixelVector` instance
+  is not required to match the count of pixels in the `LEDStrip` instance.
+  It works with any size.
+
+- To create a `PixelVector` instance that matches the size of a
+  `LEDStrip` instance, let's say `led_strip`:
+
+  ```c++
+  PixelVector pixels(led_strip.parameters().size());
+  ```
+
+- It is recommended to call `LEDStrip::shutdown()` at program startup
+  because pixels continue to lit after a system reset.
+
+- The count of pixels in the `LEDStrip` instance is used in the
+  `shutdown()` method only.
+
 ## Experimental support for LED matrices
 
 > [!IMPORTANT]
@@ -220,17 +239,28 @@ Features:
 
 ### Concepts and involved classes
 
-- Class `LEDMatrix`:
-  represents an LED strip able to display pixels in
-  a 2D matrix.
-- Class `LEDMatrixParameters`:
+- The `LEDStrip` class (and descendants) also represents
+  an LED strip able to display pixels in a 2D matrix.
+  For better semantics, you may use the `LEDMatrix` alias instead.
+  To create an LED matrix use the second constructor:
+
+  ```c++
+  LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain,
+        bool useDMA,
+        PixelDriver pixelDriver);
+  ```
+
+- Class `LedMatrixParameters`:
   specifies the physical arrangement of pixels in the underlying LED strip.
 - Class `PixelMatrix`: holds a
   "[raster graphic](https://en.wikipedia.org/wiki/Raster_graphics)"
   in the usual *row-major* format.
   You can take advantage of raster graphic libraries
   thanks to `PixelMatrix::data()`.
-  This is an specialization of `PixelVector`.
+  This is an specialization of `PixelVector` (and `std::vector<Pixel>`).
 
 ### LEDMatrix and PixelMatrix sizes
 
