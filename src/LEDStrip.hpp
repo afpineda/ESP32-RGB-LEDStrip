@@ -155,6 +155,12 @@ public:
         bool useDMA = false,
         bool reversed = false)
         : LEDStrip(pixelCount, dataPin, openDrain, useDMA, WS2811, reversed) {}
+    WS2811LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false)
+        : LEDStrip(params, dataPin, openDrain, useDMA, WS2811) {}
     WS2811LEDStrip(WS2811LEDStrip &&) = default;
     WS2811LEDStrip &operator=(WS2811LEDStrip &&) = default;
 };
@@ -170,6 +176,12 @@ public:
         bool useDMA = false,
         bool reversed = false)
         : LEDStrip(pixelCount, dataPin, openDrain, useDMA, WS2812, reversed) {}
+    WS2812LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false)
+        : LEDStrip(params, dataPin, openDrain, useDMA, WS2812) {}
     WS2812LEDStrip(WS2812LEDStrip &&) = default;
     WS2812LEDStrip &operator=(WS2812LEDStrip &&) = default;
 };
@@ -185,6 +197,12 @@ public:
         bool useDMA = false,
         bool reversed = false)
         : LEDStrip(pixelCount, dataPin, openDrain, useDMA, WS2815, reversed) {}
+    WS2815LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false)
+        : LEDStrip(params, dataPin, openDrain, useDMA, WS2815) {}
     WS2815LEDStrip(WS2815LEDStrip &&) = default;
     WS2815LEDStrip &operator=(WS2815LEDStrip &&) = default;
 };
@@ -200,6 +218,12 @@ public:
         bool useDMA = false,
         bool reversed = false)
         : LEDStrip(pixelCount, dataPin, openDrain, useDMA, SK6812, reversed) {}
+    SK6812LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false)
+        : LEDStrip(params, dataPin, openDrain, useDMA, SK6812) {}
     SK6812LEDStrip(SK6812LEDStrip &&) = default;
     SK6812LEDStrip &operator=(SK6812LEDStrip &&) = default;
 };
@@ -215,6 +239,12 @@ public:
         bool useDMA = false,
         bool reversed = false)
         : LEDStrip(pixelCount, dataPin, openDrain, useDMA, UCS1903, reversed) {}
+    UCS1903LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false)
+        : LEDStrip(params, dataPin, openDrain, useDMA, UCS1903) {}
     UCS1903LEDStrip(UCS1903LEDStrip &&) = default;
     UCS1903LEDStrip &operator=(UCS1903LEDStrip &&) = default;
 };
