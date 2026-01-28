@@ -33,17 +33,18 @@
 // CONFIGURE TO YOUR NEEDS
 #define LED_STRIP_CLASS WS2812LEDStrip
 
+
+//------------------------------------------------------------------
+// Non-configurable globals (do not touch)
 //------------------------------------------------------------------
 
-// CONFIGURE TO YOUR NEEDS
+#define LOOP_DELAY 50
 LED_STRIP_CLASS strip(PIXEL_COUNT, DATA_PIN, OPEN_DRAIN, true, REVERSED);
+PixelVector pixels(8);
 
 //------------------------------------------------------------------
 // Arduino entry point
 //------------------------------------------------------------------
-
-#define LOOP_DELAY 50
-PixelVector pixels(8);
 
 void setup()
 {
