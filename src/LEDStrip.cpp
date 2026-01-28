@@ -480,7 +480,8 @@ LEDStrip::LEDStrip(
     int dataPin,
     bool openDrain,
     bool useDMA,
-    PixelDriver pixelDriver)
+    PixelDriver pixelDriver) : RgbLedController(),
+                     _impl{::std::make_unique<Implementation>()}
 {
     _impl->initialize(params,
                       dataPin,
