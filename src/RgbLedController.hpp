@@ -33,8 +33,11 @@ class RgbLedController
     friend class RgbGuard;
 
 private:
+    /// @brief Mutex for acquire/release operations
     ::std::mutex acquireReleaseMutex;
+    /// @brief Sorted list of live guard priorities
     ::std::vector<const RgbGuard *> priorityQueue;
+    /// @brief Pointer to the guard having the higher priority
     const RgbGuard *prioritizedGuard = nullptr;
 
     /**
@@ -73,9 +76,17 @@ public:
      */
     RgbLedController() noexcept {}
 
+    /// @brief Destroy the RGB LED controller
     virtual ~RgbLedController() {}
+
+    /// @brief Move-constructor
+    /// @param source Instance to be copied
     RgbLedController(RgbLedController &&source);
+
+    /// @brief Move-assignment
+    /// @param source Instance to be copied
     RgbLedController &operator=(RgbLedController &&source);
+
     RgbLedController(const RgbLedController &) = delete;
     RgbLedController &operator=(const RgbLedController &) = delete;
 
@@ -152,6 +163,13 @@ public:
      */
     inline uint8_t priority() const noexcept { return _priority; }
 
+    /**
+     * @brief Compare guard priorities
+     *
+     * @param other Guard to be compared to
+     * @return true If this guard has lower priority
+     * @return false If this guard has higher priority
+     */
     bool operator<(const RgbGuard &other) const noexcept
     {
         return _priority < other._priority;

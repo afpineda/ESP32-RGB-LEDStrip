@@ -121,8 +121,13 @@ public:
         blue = 0;
     }
 
-    Pixel(const Pixel &) = default;
-    Pixel(Pixel &&) = default;
+    /// @brief Copy-constructor
+    /// @param source Instance to be copied
+    Pixel(const Pixel &source) = default;
+
+    /// @brief Move-constructor
+    /// @param source Instance transferring ownership
+    Pixel(Pixel &&source) = default;
 
     /**
      * @brief Assign a packed RGB color
@@ -138,8 +143,15 @@ public:
         return *this;
     }
 
-    Pixel &operator=(const Pixel &) = default;
-    Pixel &operator=(Pixel &&) = default;
+    /// @brief Copy-assignment
+    /// @param source Instance to be copied
+    /// @return This instance
+    Pixel &operator=(const Pixel &source) = default;
+
+    /// @brief Move-assignment
+    /// @param source Instance transferring ownership
+    /// @return This instance
+    Pixel &operator=(Pixel &&source) = default;
 
     /**
      * @brief Compare to a packed RGB color

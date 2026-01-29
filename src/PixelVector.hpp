@@ -26,6 +26,7 @@
 struct PixelVector : public ::std::vector<Pixel>
 {
 public:
+    /// @brief Size type of this vector
     using size_type = typename ::std::vector<Pixel>::size_type;
 
     /**
@@ -158,10 +159,36 @@ struct PixelMatrix : public PixelVector
      */
     const Pixel &at(size_type row, size_type col) const;
 
-    PixelMatrix(const PixelMatrix &) noexcept = default;
-    PixelMatrix(PixelMatrix &&) noexcept = default;
-    PixelMatrix &operator=(const PixelMatrix &) noexcept = default;
-    PixelMatrix &operator=(PixelMatrix &&) noexcept = default;
+    /**
+     * @brief Copy-constructor
+     *
+     * @param source Instance to be copied
+     */
+    PixelMatrix(const PixelMatrix &source) noexcept = default;
+
+    /**
+     * @brief Move-Constructor
+     *
+     * @param source Instance transferring ownership
+     */
+
+    PixelMatrix(PixelMatrix &&source) noexcept = default;
+
+    /**
+     * @brief Copy-assignment
+     *
+     * @param source Instance to be copied
+     * @return PixelMatrix& This instance
+     */
+    PixelMatrix &operator=(const PixelMatrix &source) noexcept = default;
+
+    /**
+     * @brief Move-assignment
+     *
+     * @param source Instance transferring ownership
+     * @return PixelMatrix& This instance
+     */
+    PixelMatrix &operator=(PixelMatrix &&source) noexcept = default;
 
     /**
      * @brief Assign an initializer list
@@ -223,6 +250,8 @@ struct PixelMatrix : public PixelVector
     void scroll_down(size_type count) noexcept;
 
 private:
+    /// @brief Number of rows
     size_type rows;
+    /// @brief Number of columns
     size_type columns;
 };

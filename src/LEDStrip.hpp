@@ -29,7 +29,9 @@
 class LEDStrip : public RgbLedController
 {
 private:
+    /// @brief Private implementation type
     class Implementation; // https://cpppatterns.com/patterns/pimpl.html
+    /// @brief Private implementation instance
     ::std::unique_ptr<Implementation> _impl;
 
 public:
@@ -69,9 +71,18 @@ public:
         bool useDMA,
         PixelDriver pixelDriver);
 
+    /// @brief Destroy the LED strip/matrix
     virtual ~LEDStrip();
-    LEDStrip(LEDStrip &&);
-    LEDStrip &operator=(LEDStrip &&);
+
+    /// @brief Transfer ownership of this LED strip/matrix via constructor
+    /// @param from Instance transfering ownership
+    LEDStrip(LEDStrip &&from);
+
+    /// @brief Transfer ownership of this LED strip/matrix via assignment
+    /// @param  from Instance transfering ownership
+    /// @return This instance
+    LEDStrip &operator=(LEDStrip &&from);
+
     LEDStrip(const LEDStrip &) = delete;
     LEDStrip &operator=(const LEDStrip &) = delete;
 
