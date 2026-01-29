@@ -1,5 +1,11 @@
 # Change log and release notes
 
+## 2.1.0
+
+- `RgbGuard::show()` now returns `true` if the guard had the highest display
+  priority. False otherwise.
+- Improved API documentation.
+
 ## 2.0.0
 
 - Led matrix support.
