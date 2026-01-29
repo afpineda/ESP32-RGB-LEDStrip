@@ -53,11 +53,15 @@ void RgbLedController::release(const RgbGuard *guard)
             });
 }
 
-void RgbLedController::show(const PixelVector &pixels, const RgbGuard *guard)
+bool RgbLedController::show(const PixelVector &pixels, const RgbGuard *guard)
 {
     assert(guard);
     if (guard == prioritizedGuard)
+    {
         show(pixels);
+        return true;
+    } else
+        return false;
 }
 
 RgbLedController::RgbLedController(RgbLedController &&source)
@@ -99,7 +103,7 @@ RgbGuard::~RgbGuard() noexcept
     controller->release(this);
 }
 
-void RgbGuard::show(const PixelVector &pixels) const
+bool RgbGuard::show(const PixelVector &pixels) const
 {
-    controller->show(pixels, this);
+    return controller->show(pixels, this);
 }

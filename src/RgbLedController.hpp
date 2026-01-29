@@ -60,8 +60,11 @@ private:
      *
      * @param pixels Pixel array
      * @param guard Guard having access (non-null)
+     *
+     * @return true If @p guard had the highest display priority
+     * @return false Otherwise
      */
-    void show(const PixelVector &pixels, const RgbGuard *guard);
+    bool show(const PixelVector &pixels, const RgbGuard *guard);
 
 public:
     /**
@@ -113,8 +116,11 @@ public:
      * @note Thread-safe
      *
      * @param pixels Pixel array
+     *
+     * @return true If @p pixels were shown
+     * @return false If @p pixels were not shown due to insufficient priority
      */
-    void show(const PixelVector &pixels) const;
+    bool show(const PixelVector &pixels) const;
 
     /**
      * @brief Acquire a display priority guard
