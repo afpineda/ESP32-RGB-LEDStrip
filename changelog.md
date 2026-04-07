@@ -1,5 +1,9 @@
 # Change log and release notes
 
+## 2.2.0
+
+- Support for APA106 pixel drivers.
+
 ## 2.1.0
 
 - `RgbGuard::show()` now returns `true` if the guard had the highest display

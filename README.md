@@ -14,7 +14,7 @@ so it can be used in ESP-IDF with minimal changes.
 ## Supported hardware
 
 - Any pixel driver using 8-bit per color channel (red, green and blue):
-  WS2811, WS2812, WS2815, SK6812 and UCS1903,
+  WS2811, WS2812, WS2815, SK6812, UCS1903 and APA106,
   or any other driver if you provide the working parameters.
 
 - ESP32 architecture.

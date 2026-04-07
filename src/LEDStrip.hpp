@@ -260,6 +260,28 @@ public:
     UCS1903LEDStrip &operator=(UCS1903LEDStrip &&) = default;
 };
 
+/// @brief LED strip using an APA106 pixel driver
+class APA106LEDStrip : public LEDStrip
+{
+public:
+    APA106LEDStrip(
+        ::std::size_t pixelCount,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false,
+        bool reversed = false)
+        : APA106LEDStrip(
+              pixelCount, dataPin, openDrain, useDMA, APA106, reversed) {}
+    APA106LEDStrip(
+        const LedMatrixParameters &params,
+        int dataPin,
+        bool openDrain = true,
+        bool useDMA = false)
+        : LEDStrip(params, dataPin, openDrain, useDMA, APA106) {}
+    APA106LEDStrip(APA106LEDStrip &&) = default;
+    APA106LEDStrip &operator=(APA106LEDStrip &&) = default;
+};
+
 //------------------------------------------------------------------------------
 
 #ifdef CD_CI

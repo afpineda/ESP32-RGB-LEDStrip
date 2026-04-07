@@ -106,6 +106,15 @@ inline constexpr PixelDriver UCS1903{
     .bit1SecondStageTime = ::std::chrono::nanoseconds{400},
     .restTime = ::std::chrono::nanoseconds{24000}};
 
+/// @brief APA106 pixel driver
+inline constexpr PixelDriver APA106{
+    .pixelFormat = PixelFormat::RGB,
+    .bit0FirstStageTime = ::std::chrono::nanoseconds{350},
+    .bit0SecondStageTime = ::std::chrono::nanoseconds{1360},
+    .bit1FirstStageTime = ::std::chrono::nanoseconds{1360},
+    .bit1SecondStageTime = ::std::chrono::nanoseconds{350},
+    .restTime = ::std::chrono::nanoseconds{50000}};
+
 //------------------------------------------------------------------------------
 
 /**
