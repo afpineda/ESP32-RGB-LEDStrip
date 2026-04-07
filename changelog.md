@@ -1,5 +1,9 @@
 # Change log and release notes
 
+## 2.2.1
+
+- Fix compiler error.
+
 ## 2.2.0
 
 - Support for APA106 pixel drivers.

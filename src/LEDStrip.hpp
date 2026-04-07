@@ -270,7 +270,7 @@ public:
         bool openDrain = true,
         bool useDMA = false,
         bool reversed = false)
-        : APA106LEDStrip(
+        : LEDStrip(
               pixelCount, dataPin, openDrain, useDMA, APA106, reversed) {}
     APA106LEDStrip(
         const LedMatrixParameters &params,
